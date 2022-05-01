@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/pages/home_page.dart';
+import 'package:library_app/pages/library_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
@@ -35,7 +36,8 @@ class _LibraryAppState extends State<LibraryApp> {
           elevation: 0,
         ),
       ),
-      body: HomePage(),
+      // body: HomePage(),
+      body: LibraryPage(),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
