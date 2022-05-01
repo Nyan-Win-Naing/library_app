@@ -32,6 +32,7 @@ class _LibraryAppState extends State<LibraryApp> {
             padding: EdgeInsets.symmetric(horizontal: MARGIN_SMALL),
             child: SearchFieldForAppBar(avatarRadius: avatarRadius),
           ),
+          elevation: 0,
         ),
       ),
       body: HomePage(),

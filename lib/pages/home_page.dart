@@ -10,6 +10,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
+      color: PRIMARY_COLOR,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -22,28 +23,47 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class BooksListSectionView extends StatelessWidget {
-  const BooksListSectionView({
+class BooksListSectionView extends StatefulWidget {
+  BooksListSectionView({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<BooksListSectionView> createState() => _BooksListSectionViewState();
+}
+
+class _BooksListSectionViewState extends State<BooksListSectionView> {
+  List<String> horizontalEbookListTitles = [
+    "More Like Don't Make Me Think, Revisit...",
+    "Ebooks for you",
+    "On your wishlist"
+  ];
+
+  List<String> horizontalAudioBookListTitles = [
+    "Audio Books",
+    "Audio books for you",
+    "On your wishlist audio books"
+  ];
+
+  int tabBarIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const DefaultTabController(
+        DefaultTabController(
           length: 2,
           child: TabBar(
             unselectedLabelColor: Color.fromRGBO(121, 122, 123, 1.0),
             labelColor: Color.fromRGBO(2, 121, 202, 1.0),
-            indicator: UnderlineTabIndicator(
+            indicator: const UnderlineTabIndicator(
               borderSide: BorderSide(
                 width: 3.0,
                 color: Color.fromRGBO(2, 121, 202, 1.0),
               ),
               insets: EdgeInsets.symmetric(horizontal: MARGIN_XXLARGE),
             ),
-            tabs: [
+            tabs: const [
               Tab(
                 child: Text(
                   "Ebooks",
@@ -61,41 +81,76 @@ class BooksListSectionView extends StatelessWidget {
                 ),
               )
             ],
-          ),
-        ),
-        SizedBox(height: MARGIN_MEDIUM_3),
-        Container(
-          child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 2,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                    child: BookListTitleView(
-                        title: "More Like Don't Make Me Think, Revisit..."),
-                  ),
-                  SizedBox(height: MARGIN_MEDIUM_2),
-                  Container(
-                    height: 290,
-                    color: Colors.black26,
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return BookView();
-                      },
-                    ),
-                  ),
-                ],
-              );
+            onTap: (index) {
+              setState(() {
+                tabBarIndex = index;
+              });
             },
           ),
         ),
+        SizedBox(height: MARGIN_MEDIUM_3),
+        (tabBarIndex == 0)
+            ? BooksByCategoryView(
+                horizontalEbookListTitles: horizontalEbookListTitles)
+            : BooksByCategoryView(
+                horizontalEbookListTitles: horizontalAudioBookListTitles),
       ],
+    );
+  }
+}
+
+class BooksByCategoryView extends StatelessWidget {
+  const BooksByCategoryView({
+    Key? key,
+    required this.horizontalEbookListTitles,
+  }) : super(key: key);
+
+  final List<String> horizontalEbookListTitles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: horizontalEbookListTitles.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                child:
+                    BookListTitleView(title: horizontalEbookListTitles[index]),
+              ),
+              SizedBox(height: MARGIN_MEDIUM_2),
+              HorizontalBookListView(),
+              SizedBox(height: MARGIN_MEDIUM),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class HorizontalBookListView extends StatelessWidget {
+  const HorizontalBookListView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 280,
+      // color: Colors.black26,
+      child: ListView.builder(
+        padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return BookView();
+        },
+      ),
     );
   }
 }
@@ -153,9 +208,14 @@ class HomeCarouselSectionView extends StatelessWidget {
                           right: MARGIN_MEDIUM,
                           top: MARGIN_MEDIUM,
                         ),
-                        child: Icon(
-                          Icons.more_horiz_rounded,
-                          color: PRIMARY_COLOR,
+                        child: GestureDetector(
+                          onTap: () {
+                            showBottomSheet(context);
+                          },
+                          child: Icon(
+                            Icons.more_horiz_rounded,
+                            color: PRIMARY_COLOR,
+                          ),
                         ),
                       ),
                     ),
@@ -222,6 +282,141 @@ class HomeCarouselSectionView extends StatelessWidget {
             },
           );
         }).toList(),
+      ),
+    );
+  }
+
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: MARGIN_MEDIUM_3,
+                  left: MARGIN_LARGE,
+                  right: MARGIN_LARGE),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 60,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(MARGIN_SMALL),
+                      image: const DecorationImage(
+                        image: NetworkImage(
+                          "https://images-na.ssl-images-amazon.com/images/I/51P8miZZ6OL._SX316_BO1,204,203,200_.jpg",
+                        ),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: MARGIN_MEDIUM_3),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "A Brief History Of Time",
+                        style: TextStyle(
+                          fontSize: MARGIN_MEDIUM_2 + 2,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MARGIN_SMALL,
+                      ),
+                      Text(
+                        "Stephen Hawking . eBook",
+                        style: TextStyle(
+                          color: Color.fromRGBO(97, 101, 104, 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: MARGIN_MEDIUM_2),
+            Container(
+              height: 1,
+              color: Color.fromRGBO(219, 220, 222, 1.0),
+            ),
+            SizedBox(height: MARGIN_CARD_MEDIUM_2),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: MARGIN_LARGE, right: MARGIN_LARGE),
+              child: Column(
+                children: [
+                  ListTileForBottomSheet(
+                      iconData: Icons.open_in_new, title: "Open series"),
+                  ListTileForBottomSheet(
+                      iconData: Icons.remove_circle_outline,
+                      title: "Remove download"),
+                  ListTileForBottomSheet(
+                      iconData: Icons.delete_outline,
+                      title: "Delete from library"),
+                  ListTileForBottomSheet(
+                      iconData: Icons.add, title: "Add to shelf"),
+                  ListTileForBottomSheet(
+                      iconData: Icons.book_outlined, title: "About this eBook"),
+                ],
+              ),
+            ),
+            SizedBox(height: MARGIN_CARD_MEDIUM_2),
+            Container(
+              padding: const EdgeInsets.only(
+                  left: MARGIN_LARGE, right: MARGIN_LARGE),
+              width: double.infinity,
+              child: FlatButton(
+                onPressed: () {},
+                color: Color.fromRGBO(0,121,202, 1.0),
+                height: 40,
+                child: Text(
+                  "Buy SGD1",
+                  style: TextStyle(
+                    color: PRIMARY_COLOR,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: MARGIN_CARD_MEDIUM_2),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class ListTileForBottomSheet extends StatelessWidget {
+  final IconData iconData;
+  final String title;
+
+  ListTileForBottomSheet({required this.iconData, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      visualDensity: VisualDensity(horizontal: 0, vertical: -1),
+      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+      leading: Icon(iconData,
+          size: MARGIN_LARGE, color: Color.fromRGBO(95, 98, 103, 1.0)),
+      title: Transform.translate(
+        offset: Offset(-16, 0),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: MARGIN_CARD_MEDIUM_2 + 2,
+            fontWeight: FontWeight.w500,
+            color: Color.fromRGBO(70, 71, 73, 1.0),
+          ),
+        ),
       ),
     );
   }
