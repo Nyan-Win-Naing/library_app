@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/pages/each_shelf_page.dart';
 import 'package:library_app/pages/library_app.dart';
 
@@ -16,8 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LibraryApp(),
-      // home: EachShelfPage(),
+      // home: LibraryApp(),
+      home: BookDetailPage(),
     );
   }
 }

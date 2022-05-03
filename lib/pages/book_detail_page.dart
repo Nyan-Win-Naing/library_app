@@ -1,0 +1,567 @@
+import 'package:flutter/material.dart';
+import 'package:library_app/resources/colors.dart';
+import 'package:library_app/resources/dimens.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+class BookDetailPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: PRIMARY_COLOR,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: PRIMARY_COLOR,
+        leading: Icon(
+          Icons.keyboard_arrow_left_sharp,
+          color: SECONDARY_COLOR,
+          size: MARGIN_XXLARGE,
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: MARGIN_LARGE),
+            child: Icon(
+              Icons.search,
+              color: SECONDARY_COLOR,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: MARGIN_LARGE),
+            child: Icon(
+              Icons.bookmark_add_outlined,
+              color: SECONDARY_COLOR,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: MARGIN_MEDIUM_3),
+            child: Icon(
+              Icons.more_vert,
+              color: SECONDARY_COLOR,
+            ),
+          ),
+        ],
+      ),
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: MARGIN_MEDIUM_3,
+                  vertical: MARGIN_XLARGE,
+                ),
+                child: BookCoverNameAndAuthorSectionView(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                child: BookRatingAndTypeSectionView(),
+              ),
+              SizedBox(height: MARGIN_XLARGE),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BookDetailButtonView(
+                        isBuy: false, buttonText: "Free sample"),
+                    BookDetailButtonView(
+                        isBuy: true, buttonText: "Buy SGD 15.30"),
+                  ],
+                ),
+              ),
+              SizedBox(height: MARGIN_XLARGE),
+              Text(
+                "Switch to the audiobook",
+                style: TextStyle(
+                  color: Color.fromRGBO(6, 119, 192, 1.0),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: MARGIN_XLARGE),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                height: 1,
+                color: Color.fromRGBO(219, 220, 222, 0.5),
+              ),
+              SizedBox(height: MARGIN_XLARGE),
+              AboutEbookOrAuthorSectionView(title: "About this eBook"),
+              SizedBox(height: MARGIN_XLARGE),
+              RatingAndReviewSectionView(),
+              SizedBox(height: MARGIN_XLARGE),
+              AboutEbookOrAuthorSectionView(title: "About the author"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RatingAndReviewSectionView extends StatelessWidget {
+  const RatingAndReviewSectionView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final avatarRadius = screenHeight / 35;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MovieDetailTitleView(title: "Ratings and reviews"),
+          SizedBox(height: MARGIN_MEDIUM_3),
+          RatingNumberAndProgressBarSectionView(),
+          SizedBox(height: MARGIN_MEDIUM_3),
+          CommentSectionView(avatarRadius: avatarRadius),
+        ],
+      ),
+    );
+  }
+}
+
+class CommentSectionView extends StatelessWidget {
+  const CommentSectionView({
+    Key? key,
+    required this.avatarRadius,
+  }) : super(key: key);
+
+  final double avatarRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          radius: avatarRadius,
+          backgroundImage: const NetworkImage(
+            "https://tasteminty.com/page/wp-content/uploads/2020/02/Girl-in-chair-.png",
+          ),
+        ),
+        SizedBox(width: MARGIN_MEDIUM_2),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Emma Stone",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: MARGIN_SMALL),
+              Row(
+                children: [
+                  RatingBar.builder(
+                    initialRating: 5.0,
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Colors.blue,
+                    ),
+                    itemSize: MARGIN_MEDIUM_2,
+                    onRatingUpdate: (rating) {},
+                  ),
+                  const SizedBox(width: MARGIN_MEDIUM),
+                  const Text(
+                    "19 May 2022",
+                    style: TextStyle(
+                      color: MOVIE_DETAILS_TEXT_LIGHT_COLOR,
+                      fontSize: MARGIN_CARD_MEDIUM_2,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: MARGIN_MEDIUM),
+              Text(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                style: TextStyle(
+                  color: MOVIE_DETAILS_TEXT_LIGHT_COLOR,
+                ),
+              ),
+              SizedBox(height: MARGIN_LARGE),
+              Row(
+                children: const [
+                  Text(
+                    "Was this review helpful?",
+                    style: TextStyle(
+                      fontSize: MARGIN_CARD_MEDIUM_2,
+                      color: MOVIE_DETAILS_TEXT_LIGHT_COLOR,
+                    ),
+                  ),
+                  SizedBox(width: MARGIN_MEDIUM_2),
+                  Chip(
+                    side: BorderSide(
+                      color: Color.fromRGBO(219, 221, 224, 1.0),
+                      width: 1,
+                    ),
+                    backgroundColor: PRIMARY_COLOR,
+                    label: Text(
+                      "Yes",
+                    ),
+                  ),
+                  SizedBox(width: MARGIN_MEDIUM),
+                  Chip(
+                    side: BorderSide(
+                      color: Color.fromRGBO(219, 221, 224, 1.0),
+                      width: 1,
+                    ),
+                    backgroundColor: PRIMARY_COLOR,
+                    label: Text(
+                      "No",
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RatingNumberAndProgressBarSectionView extends StatelessWidget {
+  const RatingNumberAndProgressBarSectionView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            const Text(
+              "4.6",
+              style: TextStyle(
+                fontSize: MARGIN_XXLARGE,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: MARGIN_SMALL),
+            RatingBar.builder(
+              initialRating: 5.0,
+              itemBuilder: (context, index) => const Icon(
+                Icons.star,
+                color: Colors.blue,
+              ),
+              itemSize: MARGIN_MEDIUM_2,
+              onRatingUpdate: (rating) {},
+            ),
+            const SizedBox(height: MARGIN_MEDIUM + 2),
+            const Text(
+              "1868 total",
+              style: TextStyle(
+                color: Color.fromRGBO(124, 128, 130, 1.0),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LinearProgressBarView(rateNumber: "5", ratePercent: 0.8),
+            LinearProgressBarView(rateNumber: "4", ratePercent: 0.2),
+            LinearProgressBarView(rateNumber: "3", ratePercent: 0.05),
+            LinearProgressBarView(rateNumber: "2", ratePercent: 0.05),
+            LinearProgressBarView(rateNumber: "1", ratePercent: 0.05),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class LinearProgressBarView extends StatelessWidget {
+  final String rateNumber;
+  final double ratePercent;
+
+  LinearProgressBarView({required this.rateNumber, required this.ratePercent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: MARGIN_SMALL),
+      child: Row(
+        children: [
+          Text(
+            rateNumber,
+            style: TextStyle(
+              color: Color.fromRGBO(124, 128, 130, 1.0),
+            ),
+          ),
+          SizedBox(width: MARGIN_SMALL),
+          LinearPercentIndicator(
+            backgroundColor: Color.fromRGBO(231, 233, 232, 1.0),
+            width: 200,
+            animation: true,
+            lineHeight: 10.0,
+            animationDuration: 2500,
+            percent: ratePercent,
+            linearStrokeCap: LinearStrokeCap.roundAll,
+            progressColor: Colors.blue,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AboutEbookOrAuthorSectionView extends StatelessWidget {
+
+  final String title;
+
+  AboutEbookOrAuthorSectionView({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+      child: Column(
+        children: [
+          MovieDetailTitleView(title: title),
+          SizedBox(height: MARGIN_MEDIUM_2),
+          Text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nibh mauris cursus mattis. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. A iaculis at erat pe",
+            style: TextStyle(
+              color: Color.fromRGBO(124, 128, 130, 1.0),
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MovieDetailTitleView extends StatelessWidget {
+  final String title;
+
+  MovieDetailTitleView({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: Color.fromRGBO(32, 33, 35, 1.0),
+            fontSize: MARGIN_MEDIUM_3,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Icon(
+          Icons.arrow_forward,
+          color: Colors.blue,
+          size: MARGIN_LARGE,
+        ),
+      ],
+    );
+  }
+}
+
+class BookDetailButtonView extends StatelessWidget {
+  final bool isBuy;
+  final String buttonText;
+
+  BookDetailButtonView({required this.isBuy, required this.buttonText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150,
+      height: 40,
+      decoration: BoxDecoration(
+        color: (!isBuy) ? PRIMARY_COLOR : Color.fromRGBO(6, 119, 192, 1.0),
+        borderRadius: BorderRadius.circular(MARGIN_SMALL),
+        border: (!isBuy)
+            ? Border.all(
+                color: Color.fromRGBO(219, 220, 222, 1.0),
+              )
+            : null,
+      ),
+      child: Center(
+        child: Text(
+          buttonText,
+          style: TextStyle(
+              color:
+                  (!isBuy) ? Color.fromRGBO(6, 119, 192, 1.0) : PRIMARY_COLOR,
+              fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
+  }
+}
+
+class BookRatingAndTypeSectionView extends StatelessWidget {
+  const BookRatingAndTypeSectionView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  "4.6",
+                  style: TextStyle(
+                    fontSize: MARGIN_MEDIUM_2,
+                    color: Color.fromRGBO(95, 98, 102, 1.0),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(width: MARGIN_SMALL - 2),
+                Icon(
+                  Icons.star,
+                  color: Color.fromRGBO(95, 98, 102, 1.0),
+                )
+              ],
+            ),
+            SizedBox(height: MARGIN_MEDIUM),
+            Text(
+              "1K reviews",
+              style: TextStyle(
+                color: Color.fromRGBO(124, 128, 130, 1.0),
+              ),
+            ),
+          ],
+        ),
+        SmallLineDivider(),
+        Column(
+          children: [
+            Icon(
+              Icons.book_outlined,
+              color: Color.fromRGBO(95, 98, 102, 1.0),
+            ),
+            SizedBox(height: MARGIN_MEDIUM),
+            Text(
+              "eBook",
+              style: TextStyle(
+                color: Color.fromRGBO(124, 128, 130, 1.0),
+              ),
+            ),
+          ],
+        ),
+        SmallLineDivider(),
+        Column(
+          children: [
+            Text(
+              "272",
+              style: TextStyle(
+                fontSize: MARGIN_MEDIUM_2,
+                color: Color.fromRGBO(95, 98, 102, 1.0),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: MARGIN_MEDIUM),
+            Text(
+              "Pages",
+              style: TextStyle(
+                color: Color.fromRGBO(124, 128, 130, 1.0),
+              ),
+            ),
+          ],
+        ),
+        SmallLineDivider(),
+        Column(
+          children: [
+            Icon(
+              Icons.gpp_good_outlined,
+              color: Color.fromRGBO(95, 98, 102, 1.0),
+            ),
+            SizedBox(height: MARGIN_MEDIUM),
+            Text(
+              "Eligible",
+              style: TextStyle(
+                color: Color.fromRGBO(124, 128, 130, 1.0),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class SmallLineDivider extends StatelessWidget {
+  const SmallLineDivider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 1,
+      height: MARGIN_LARGE,
+      color: Color.fromRGBO(219, 220, 222, 1.0),
+    );
+  }
+}
+
+class BookCoverNameAndAuthorSectionView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          height: 170,
+          decoration: BoxDecoration(
+            color: Colors.black26,
+            image: DecorationImage(
+              image: NetworkImage(
+                "https://cdn2.penguin.com.au/covers/original/9780857501004.jpg",
+              ),
+              fit: BoxFit.fill,
+            ),
+            borderRadius: BorderRadius.circular(MARGIN_MEDIUM),
+          ),
+        ),
+        SizedBox(width: MARGIN_MEDIUM_2),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "A Brief History Of Time: From Big Bang To Black Holes",
+                style: TextStyle(
+                  fontSize: MARGIN_LARGE,
+                  fontWeight: FontWeight.w600,
+                  height: 1.4,
+                ),
+              ),
+              SizedBox(height: MARGIN_XLARGE),
+              Text(
+                "Stephen Hawking",
+                style: TextStyle(
+                  color: Color.fromRGBO(10, 118, 189, 1.0),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: MARGIN_MEDIUM),
+              Text(
+                "Random House",
+                style: TextStyle(
+                  color: Color.fromRGBO(94, 98, 101, 1.0),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
