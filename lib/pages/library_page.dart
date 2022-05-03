@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/pages/add_shelf_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/viewitems/book_view.dart';
@@ -86,17 +87,100 @@ class _LibraryPageState extends State<LibraryPage> {
                       ),
                     ],
                   )
-                : ListView.builder(
-                    itemCount: 1,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return ShelfItem();
-                    },
+                : Container(
+                    height: MediaQuery.of(context).size.height * 2.2 / 3,
+                    child: Stack(
+                      children: [
+                        YourShelvesListSectionView(),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: CreateShelfButtonSectionView(),
+                        ),
+                      ],
+                    ),
                   ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class CreateShelfButtonSectionView extends StatelessWidget {
+  const CreateShelfButtonSectionView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: MARGIN_XLARGE),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddShelfPage(),
+            ),
+          );
+        },
+        child: Container(
+          width: 130,
+          height: 45,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(2, 121, 202, 1.0),
+            borderRadius: BorderRadius.circular(MARGIN_LARGE),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.2),
+                spreadRadius: 2,
+                blurRadius: 4,
+                offset: Offset(0, 5),
+              )
+            ],
+          ),
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.create_outlined,
+                  color: PRIMARY_COLOR,
+                  size: MARGIN_MEDIUM_3,
+                ),
+                SizedBox(width: MARGIN_MEDIUM),
+                Text(
+                  "Create New",
+                  style: TextStyle(
+                    color: PRIMARY_COLOR,
+                    fontSize: MARGIN_CARD_MEDIUM_2,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class YourShelvesListSectionView extends StatelessWidget {
+  const YourShelvesListSectionView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.only(top: MARGIN_MEDIUM_3),
+      itemCount: 2,
+      // shrinkWrap: true,
+      // physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return ShelfItem();
+      },
     );
   }
 }
@@ -110,7 +194,7 @@ class YourBookListSectionView extends StatefulWidget {
 class _YourBookListSectionViewState extends State<YourBookListSectionView> {
   IconData changeToView = Icons.grid_view;
 
-  int val = -1;
+  int val = 2;
   String sortByStatus = "Recent";
 
   @override
