@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/pages/each_shelf_page.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/pages/library_page.dart';
 import 'package:library_app/resources/colors.dart';
@@ -23,6 +24,7 @@ class _LibraryAppState extends State<LibraryApp> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final avatarRadius = screenHeight / 45;
+    print("Bottom nav index is: $bottomNavIndex");
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
@@ -36,10 +38,10 @@ class _LibraryAppState extends State<LibraryApp> {
           elevation: 0,
         ),
       ),
+      body: (bottomNavIndex == 0) ? HomePage() : LibraryPage(),
       // body: HomePage(),
-      body: LibraryPage(),
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",

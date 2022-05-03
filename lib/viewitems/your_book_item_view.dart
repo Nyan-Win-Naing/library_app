@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:library_app/resources/show_book_bottom_sheet.dart';
 
 class YourBookItemView extends StatelessWidget {
   @override
@@ -75,9 +76,14 @@ class YourBookItemView extends StatelessWidget {
                   size: MARGIN_MEDIUM_2,
                 ),
                 SizedBox(width: MARGIN_MEDIUM_3),
-                Icon(
-                  Icons.more_horiz,
-                  color: SECONDARY_COLOR,
+                GestureDetector(
+                  onTap: () {
+                    showBookBottomSheet(context, isHomePage: false);
+                  },
+                  child: Icon(
+                    Icons.more_horiz,
+                    color: SECONDARY_COLOR,
+                  ),
                 ),
               ],
             )
