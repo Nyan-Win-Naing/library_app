@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/pages/book_detail_page.dart';
+import 'package:library_app/pages/more_books_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/show_book_bottom_sheet.dart';
 import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/widgets/book_list_title_view.dart';
+import 'package:library_app/widgets/horizontal_book_list_view.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -92,10 +95,27 @@ class _BooksListSectionViewState extends State<BooksListSectionView> {
         SizedBox(height: MARGIN_MEDIUM_3),
         (tabBarIndex == 0)
             ? BooksByCategoryView(
-                horizontalEbookListTitles: horizontalEbookListTitles)
+                horizontalEbookListTitles: horizontalEbookListTitles,
+                onTap: () {
+                  _navigateToBookDetailPage(context);
+                },
+              )
             : BooksByCategoryView(
-                horizontalEbookListTitles: horizontalAudioBookListTitles),
+                horizontalEbookListTitles: horizontalAudioBookListTitles,
+                onTap: () {
+                  _navigateToBookDetailPage(context);
+                },
+              ),
       ],
+    );
+  }
+
+  void _navigateToBookDetailPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetailPage(),
+      ),
     );
   }
 }
@@ -104,9 +124,11 @@ class BooksByCategoryView extends StatelessWidget {
   const BooksByCategoryView({
     Key? key,
     required this.horizontalEbookListTitles,
+    required this.onTap,
   }) : super(key: key);
 
   final List<String> horizontalEbookListTitles;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +142,17 @@ class BooksByCategoryView extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                child:
-                    BookListTitleView(title: horizontalEbookListTitles[index]),
+                child: BookListTitleView(
+                  title: horizontalEbookListTitles[index],
+                  onTap: () => navigateToMoreBooksPage(context, horizontalEbookListTitles[index]),
+                ),
               ),
               SizedBox(height: MARGIN_MEDIUM_2),
-              HorizontalBookListView(),
+              HorizontalBookListView(
+                onTap: () {
+                  onTap();
+                },
+              ),
               SizedBox(height: MARGIN_MEDIUM),
             ],
           );
@@ -132,25 +160,12 @@ class BooksByCategoryView extends StatelessWidget {
       ),
     );
   }
-}
 
-class HorizontalBookListView extends StatelessWidget {
-  const HorizontalBookListView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 280,
-      // color: Colors.black26,
-      child: ListView.builder(
-        padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return BookView();
-        },
+  void navigateToMoreBooksPage(BuildContext context, String title) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MoreBookPage(title: title,),
       ),
     );
   }

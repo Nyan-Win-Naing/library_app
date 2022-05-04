@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/viewitems/cancel_chip_view.dart';
 import 'package:library_app/viewitems/text_chip_view.dart';
 import 'package:library_app/viewitems/your_book_item_view.dart';
+import 'package:library_app/widgets/show_in_2x_grid_view.dart';
+import 'package:library_app/widgets/show_in_3x_grid_view.dart';
 
 class ChipsAndBookListView extends StatelessWidget {
   const ChipsAndBookListView({
@@ -148,14 +151,27 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
         SizedBox(height: MARGIN_XLARGE),
         Builder(builder: (context) {
           if (changeToView == Icons.grid_view) {
-            return ShowInVerticalListView();
+            return ShowInVerticalListView(onTap: () => _navigateToBookDetailPage(context));
           } else if (changeToView == Icons.grid_on) {
-            return ShowIn2xGridView();
+            return ShowIn2xGridView(onTap: () => _navigateToBookDetailPage(context));
           } else {
-            return ShowIn3xGridView();
+            return ShowIn3xGridView(
+              onTap: () {
+                _navigateToBookDetailPage(context);
+              },
+            );
           }
         }),
       ],
+    );
+  }
+
+  void _navigateToBookDetailPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetailPage(),
+      ),
     );
   }
 
@@ -263,65 +279,11 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
   }
 }
 
-class ShowIn3xGridView extends StatelessWidget {
-  const ShowIn3xGridView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: EdgeInsets.only(left: MARGIN_MEDIUM_3, right: 10),
-      itemCount: 20,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 120 / 240,
-      ),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 0),
-          child: BookView(
-            isHomePage: false,
-            is3xGrid: true,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ShowIn2xGridView extends StatelessWidget {
-  const ShowIn2xGridView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),
-      itemCount: 20,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 160 / 270,
-      ),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 0),
-          child: BookView(isHomePage: false),
-        );
-      },
-    );
-  }
-}
-
 class ShowInVerticalListView extends StatelessWidget {
-  const ShowInVerticalListView({
-    Key? key,
-  }) : super(key: key);
+
+  final Function onTap;
+
+  ShowInVerticalListView({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -331,7 +293,11 @@ class ShowInVerticalListView extends StatelessWidget {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return YourBookItemView();
+        return YourBookItemView(
+          onTap: () {
+            onTap();
+          },
+        );
       },
     );
   }
