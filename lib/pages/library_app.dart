@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/pages/each_shelf_page.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/pages/library_page.dart';
+import 'package:library_app/pages/search_book_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
@@ -89,24 +91,46 @@ class SearchFieldForAppBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.search,
-            color: Color.fromRGBO(94, 99, 103, 1.0),
-          ),
-          SizedBox(
-            width: MARGIN_CARD_MEDIUM_2,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 1.7 / 3,
-            child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: "Search Play Books",
-                hintStyle: TextStyle(
-                  color: Color.fromRGBO(95, 100, 104, 1.0),
-                  fontSize: 15,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchBookPage(),
                 ),
-              ),
+              );
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.search,
+                  color: Color.fromRGBO(94, 99, 103, 1.0),
+                ),
+                SizedBox(
+                  width: MARGIN_CARD_MEDIUM_2,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 1.7 / 3,
+                  // child: TextField(
+                  //   decoration: InputDecoration(
+                  //     border: InputBorder.none,
+                  //     hintText: "Search Play Books",
+                  //     hintStyle: TextStyle(
+                  //       color: Color.fromRGBO(95, 100, 104, 1.0),
+                  //       fontSize: 15,
+                  //     ),
+                  //   ),
+                  // ),
+                  child: Text(
+                    "Search Play Books",
+                    style: TextStyle(
+                      color: Color.fromRGBO(95, 100, 104, 1.0),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(width: MARGIN_MEDIUM_3),
