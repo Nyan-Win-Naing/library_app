@@ -14,3 +14,6 @@ const TEXT_REGULAR_3X = 20.0;
 const TEXT_HEADING_1X = 24.0;
 const TEXT_HEADING_2X = 28.0;
 const TEXT_BIG = 32.0;
+
+/// App Specific Dimensions
+const HOME_PAGE_CAROUSEL_ITEM_WIDTH = 200.0;

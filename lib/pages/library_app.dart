@@ -7,6 +7,7 @@ import 'package:library_app/pages/library_page.dart';
 import 'package:library_app/pages/search_book_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:library_app/resources/strings.dart';
 
 class LibraryApp extends StatefulWidget {
   @override
@@ -29,28 +30,27 @@ class _LibraryAppState extends State<LibraryApp> {
     print("Bottom nav index is: $bottomNavIndex");
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: const Size.fromHeight(80.0),
         child: AppBar(
           toolbarHeight: 80,
           backgroundColor: PRIMARY_COLOR,
           title: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MARGIN_SMALL),
+            padding: const EdgeInsets.symmetric(horizontal: MARGIN_SMALL),
             child: SearchFieldForAppBar(avatarRadius: avatarRadius),
           ),
           elevation: 0,
         ),
       ),
       body: (bottomNavIndex == 0) ? HomePage() : LibraryPage(),
-      // body: HomePage(),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Home",
+            label: MAIN_SCREEN_BOTTOM_NAVIGATION_HOME,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_books_outlined),
-            label: "Library",
+            label: MAIN_SCREEN_BOTTOM_NAVIGATION_LIBRARY,
           ),
         ],
         currentIndex: bottomNavIndex,
@@ -72,15 +72,14 @@ class SearchFieldForAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: MARGIN_CARD_MEDIUM_2,
         right: MARGIN_MEDIUM,
       ),
       decoration: BoxDecoration(
-        // color: Colors.blueAccent,
         color: Colors.white,
         borderRadius: BorderRadius.circular(MARGIN_MEDIUM),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color.fromRGBO(0, 0, 0, 0.5),
             spreadRadius: 0.2,
@@ -102,29 +101,19 @@ class SearchFieldForAppBar extends StatelessWidget {
             },
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.search,
-                  color: Color.fromRGBO(94, 99, 103, 1.0),
+                  color: MAIN_SCREEN_APP_BAR_SEARCH_ICON_COLOR,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: MARGIN_CARD_MEDIUM_2,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 1.7 / 3,
-                  // child: TextField(
-                  //   decoration: InputDecoration(
-                  //     border: InputBorder.none,
-                  //     hintText: "Search Play Books",
-                  //     hintStyle: TextStyle(
-                  //       color: Color.fromRGBO(95, 100, 104, 1.0),
-                  //       fontSize: 15,
-                  //     ),
-                  //   ),
-                  // ),
-                  child: Text(
-                    "Search Play Books",
+                  child: const Text(
+                    MAIN_SCREEN_APP_BAR_TEXT,
                     style: TextStyle(
-                      color: Color.fromRGBO(95, 100, 104, 1.0),
+                      color: MAIN_SCREEN_APP_BAR_TEXT_COLOR,
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                     ),
@@ -133,10 +122,10 @@ class SearchFieldForAppBar extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: MARGIN_MEDIUM_3),
+          const SizedBox(width: MARGIN_MEDIUM_3),
           CircleAvatar(
             radius: avatarRadius,
-            backgroundImage: NetworkImage(
+            backgroundImage: const NetworkImage(
               "https://tasteminty.com/page/wp-content/uploads/2020/02/Girl-in-chair-.png",
             ),
           ),

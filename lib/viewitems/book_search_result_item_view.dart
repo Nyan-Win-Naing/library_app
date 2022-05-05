@@ -1,35 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/dummy/dummy_book_vo.dart';
+import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
 class BookSearchResultItemView extends StatelessWidget {
-
   final DummyBookVO book;
 
   BookSearchResultItemView({required this.book});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      margin: EdgeInsets.only(bottom: MARGIN_XLARGE),
-      // color: Colors.black26,
-      child: Row(
-        children: [
-          BookCoverSectionView(book: book),
-          SizedBox(width: MARGIN_MEDIUM_2),
-          Flexible(
-            child: SearchedBookInformationView(book: book),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookDetailPage(),
           ),
-        ],
+        );
+      },
+      child: Container(
+        height: 150,
+        margin: EdgeInsets.only(bottom: MARGIN_XLARGE),
+        // color: Colors.black26,
+        child: Row(
+          children: [
+            BookCoverSectionView(book: book),
+            SizedBox(width: MARGIN_MEDIUM_2),
+            Flexible(
+              child: SearchedBookInformationView(book: book),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class SearchedBookInformationView extends StatelessWidget {
-
   final DummyBookVO book;
 
   SearchedBookInformationView({required this.book});

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:library_app/resources/strings.dart';
 import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/viewitems/icon_chip_view.dart';
 import 'package:library_app/viewitems/text_chip_view.dart';
@@ -26,9 +27,9 @@ class ChipsAndBookListView extends StatelessWidget {
       children: [
         CategoryChipsSectionView(
             chipNames: chipNames, runtimeType: runtimeType),
-        SizedBox(height: MARGIN_MEDIUM_3),
+        const SizedBox(height: MARGIN_MEDIUM_3),
         Padding(
-          padding: EdgeInsets.only(left: 0),
+          padding: const EdgeInsets.only(left: 0),
           child: YourBookListSectionView(),
         ),
       ],
@@ -61,7 +62,7 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             right: MARGIN_MEDIUM_3,
             // left: (changeToView != Icons.view_list_outlined)
             //     ? MARGIN_MEDIUM_3
@@ -77,14 +78,14 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                 },
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.sort,
                       color: SECONDARY_COLOR,
                     ),
                     SizedBox(width: MARGIN_MEDIUM),
                     Text(
                       "Sort by: $sortByStatus",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: SECONDARY_COLOR,
                         fontSize: MARGIN_CARD_MEDIUM_2 + 1,
                       ),
@@ -115,7 +116,7 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
             ],
           ),
         ),
-        SizedBox(height: MARGIN_XLARGE),
+        const SizedBox(height: MARGIN_XLARGE),
         Builder(builder: (context) {
           if (changeToView == Icons.grid_view) {
             return ShowInVerticalListView(onTap: () => _navigateToBookDetailPage(context));
@@ -156,7 +157,7 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                   padding: EdgeInsets.symmetric(
                       horizontal: MARGIN_LARGE, vertical: MARGIN_LARGE),
                   child: Text(
-                    "Sort by",
+                    BOTTOM_SHEET_SORT_BY_TITLE,
                     style: TextStyle(
                         fontSize: MARGIN_MEDIUM_3, fontWeight: FontWeight.w400),
                   ),
@@ -170,8 +171,8 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                     ListTile(
                       title: Transform.translate(
                         offset: Offset(-12, 0),
-                        child: Text(
-                          "Author",
+                        child: const Text(
+                          SORT_BY_BUTTOM_SHEET_AUTHOR,
                           style: TextStyle(
                             fontSize: MARGIN_CARD_MEDIUM_2 + 2,
                             fontWeight: FontWeight.w600,
@@ -192,8 +193,8 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                     ListTile(
                       title: Transform.translate(
                         offset: Offset(-12, 0),
-                        child: Text(
-                          "Recent",
+                        child: const Text(
+                          SORT_BY_BUTTOM_SHEET_RECENT,
                           style: TextStyle(
                             fontSize: MARGIN_CARD_MEDIUM_2 + 2,
                             fontWeight: FontWeight.w600,
@@ -215,8 +216,8 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                     ListTile(
                       title: Transform.translate(
                         offset: Offset(-12, 0),
-                        child: Text(
-                          "Title",
+                        child: const Text(
+                          SORT_BY_BUTTOM_SHEET_TITLE,
                           style: TextStyle(
                             fontSize: MARGIN_CARD_MEDIUM_2 + 2,
                             fontWeight: FontWeight.w600,
@@ -255,10 +256,10 @@ class ShowInVerticalListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+      padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
       itemCount: 20,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return YourBookItemView(
           onTap: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:library_app/resources/strings.dart';
 import 'package:library_app/widgets/horizontal_book_list_view.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -17,13 +18,13 @@ class BookDetailPage extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.keyboard_arrow_left_sharp,
             color: SECONDARY_COLOR,
             size: MARGIN_XXLARGE,
           ),
         ),
-        actions: [
+        actions: const [
           Padding(
             padding: EdgeInsets.only(right: MARGIN_LARGE),
             child: Icon(
@@ -32,14 +33,14 @@ class BookDetailPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: MARGIN_LARGE),
+            padding: EdgeInsets.only(right: MARGIN_LARGE),
             child: Icon(
               Icons.bookmark_add_outlined,
               color: SECONDARY_COLOR,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: MARGIN_MEDIUM_3),
+            padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
             child: Icon(
               Icons.more_vert,
               color: SECONDARY_COLOR,
@@ -58,14 +59,14 @@ class BookDetailPage extends StatelessWidget {
                 ),
                 child: BookCoverNameAndAuthorSectionView(),
               ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                child: BookRatingAndTypeSectionView(),
+              ),
+              const SizedBox(height: MARGIN_XLARGE),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                child: BookRatingAndTypeSectionView(),
-              ),
-              SizedBox(height: MARGIN_XLARGE),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -76,43 +77,43 @@ class BookDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: MARGIN_XLARGE),
-              Text(
-                "Switch to the audiobook",
+              const SizedBox(height: MARGIN_XLARGE),
+              const Text(
+                DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT,
                 style: TextStyle(
-                  color: Color.fromRGBO(6, 119, 192, 1.0),
+                  color: DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT_COLOR,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: MARGIN_XLARGE),
+              const SizedBox(height: MARGIN_XLARGE),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                margin: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
                 height: 1,
-                color: Color.fromRGBO(219, 220, 222, 0.5),
+                color: HORIZONTAL_DIVIDER_LINE_LIGHT_COLOR,
               ),
-              SizedBox(height: MARGIN_XLARGE),
+              const SizedBox(height: MARGIN_XLARGE),
               AboutEbookOrAuthorSectionView(title: "About this eBook"),
-              SizedBox(height: MARGIN_XLARGE),
-              RatingAndReviewSectionView(),
-              SizedBox(height: MARGIN_XLARGE),
+              const SizedBox(height: MARGIN_XLARGE),
+              const RatingAndReviewSectionView(),
+              const SizedBox(height: MARGIN_XLARGE),
               AboutEbookOrAuthorSectionView(title: "About the author"),
-              SizedBox(height: MARGIN_XLARGE),
+              const SizedBox(height: MARGIN_XLARGE),
               BookDetailHorizontalBookListView(
                 title: "Similar ebooks",
                 onTap: () {
                   _navigateToBookDetailPage(context);
                 },
               ),
-              SizedBox(height: MARGIN_MEDIUM_3),
+              const SizedBox(height: MARGIN_MEDIUM_3),
               BookDetailHorizontalBookListView(
                 title: "More by Stephen Hawking",
                 onTap: () {
                   _navigateToBookDetailPage(context);
                 },
               ),
-              SizedBox(height: MARGIN_MEDIUM_3),
-              RateThisEbookSectionView(),
-              SizedBox(height: MARGIN_MEDIUM_3),
+              const SizedBox(height: MARGIN_MEDIUM_3),
+              const RateThisEbookSectionView(),
+              const SizedBox(height: MARGIN_MEDIUM_3),
             ],
           ),
         ),
@@ -143,22 +144,24 @@ class RateThisEbookSectionView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
           child: BookDetailTitleView(
-              title: "Rate this eBook", isRateThisEbookSection: true),
+            title: DETAIL_PAGE_RATE_THIS_EBOOK,
+            isRateThisEbookSection: true,
+          ),
         ),
-        SizedBox(height: MARGIN_MEDIUM),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+        const SizedBox(height: MARGIN_MEDIUM),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
           child: Text(
-            "Tell others what you tink",
+            DETAIL_PAGE_TELL_OTHER_WHAT_YOU_THINK,
             style: TextStyle(
               color: SECONDARY_COLOR,
             ),
           ),
         ),
-        SizedBox(height: MARGIN_MEDIUM_2),
+        const SizedBox(height: MARGIN_MEDIUM_2),
         Center(
           child: RatingBar.builder(
-            unratedColor: Color.fromRGBO(195, 196, 198, 1.0),
+            unratedColor: DETAIL_PAEG_RATING_BAR_UNRATED_COLOR,
             itemBuilder: (BuildContext context, int index) => const Icon(
               Icons.star,
               color: Colors.blue,
@@ -169,10 +172,10 @@ class RateThisEbookSectionView extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: MARGIN_MEDIUM_2),
+        const SizedBox(height: MARGIN_MEDIUM_2),
         Center(
           child:
-              BookDetailButtonView(isBuy: false, buttonText: "Write a reivew"),
+              BookDetailButtonView(isBuy: false, buttonText: DETAIL_PAGE_WRITE_A_REVIEW_BUTTON_TEXT),
         )
       ],
     );
@@ -183,8 +186,7 @@ class BookDetailHorizontalBookListView extends StatelessWidget {
   final String title;
   final Function onTap;
 
-  BookDetailHorizontalBookListView(
-      {required this.title, required this.onTap});
+  BookDetailHorizontalBookListView({required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +196,7 @@ class BookDetailHorizontalBookListView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
           child: BookDetailTitleView(title: title),
         ),
-        SizedBox(height: MARGIN_MEDIUM_2),
+        const SizedBox(height: MARGIN_MEDIUM_2),
         HorizontalBookListView(
           onTap: () {
             onTap();
@@ -215,14 +217,14 @@ class RatingAndReviewSectionView extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final avatarRadius = screenHeight / 35;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+      padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BookDetailTitleView(title: "Ratings and reviews"),
-          SizedBox(height: MARGIN_MEDIUM_3),
-          RatingNumberAndProgressBarSectionView(),
-          SizedBox(height: MARGIN_MEDIUM_3),
+          const SizedBox(height: MARGIN_MEDIUM_3),
+          const RatingNumberAndProgressBarSectionView(),
+          const SizedBox(height: MARGIN_MEDIUM_3),
           CommentSectionView(avatarRadius: avatarRadius),
         ],
       ),
@@ -249,7 +251,7 @@ class CommentSectionView extends StatelessWidget {
             "https://tasteminty.com/page/wp-content/uploads/2020/02/Girl-in-chair-.png",
           ),
         ),
-        SizedBox(width: MARGIN_MEDIUM_2),
+        const SizedBox(width: MARGIN_MEDIUM_2),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,8 +284,8 @@ class CommentSectionView extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: MARGIN_MEDIUM),
-              Text(
+              const SizedBox(height: MARGIN_MEDIUM),
+              const Text(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 style: TextStyle(
                   color: BOOK_DETAILS_TEXT_LIGHT_COLOR,
@@ -398,13 +400,13 @@ class LinearProgressBarView extends StatelessWidget {
         children: [
           Text(
             rateNumber,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color.fromRGBO(124, 128, 130, 1.0),
             ),
           ),
           SizedBox(width: MARGIN_SMALL),
           LinearPercentIndicator(
-            backgroundColor: Color.fromRGBO(231, 233, 232, 1.0),
+            backgroundColor: const Color.fromRGBO(231, 233, 232, 1.0),
             width: 200,
             animation: true,
             lineHeight: 10.0,
@@ -427,12 +429,12 @@ class AboutEbookOrAuthorSectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+      padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
       child: Column(
         children: [
           BookDetailTitleView(title: title),
           SizedBox(height: MARGIN_MEDIUM_2),
-          Text(
+          const Text(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nibh mauris cursus mattis. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. A iaculis at erat pe",
             style: TextStyle(
               color: Color.fromRGBO(124, 128, 130, 1.0),
@@ -459,15 +461,15 @@ class BookDetailTitleView extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
-            color: Color.fromRGBO(32, 33, 35, 1.0),
+          style: const TextStyle(
+            color: DETAIT_PAGE_TITLE_VIEW_COLOR,
             fontSize: MARGIN_MEDIUM_3,
             fontWeight: FontWeight.w500,
           ),
         ),
         Visibility(
           visible: (!isRateThisEbookSection) ? true : false,
-          child: Icon(
+          child: const Icon(
             Icons.arrow_forward,
             color: Colors.blue,
             size: MARGIN_LARGE,
@@ -490,11 +492,11 @@ class BookDetailButtonView extends StatelessWidget {
       width: 150,
       height: 40,
       decoration: BoxDecoration(
-        color: (!isBuy) ? PRIMARY_COLOR : Color.fromRGBO(6, 119, 192, 1.0),
+        color: (!isBuy) ? PRIMARY_COLOR : DETAIL_PAGE_SOLID_BUTTON_COLOR,
         borderRadius: BorderRadius.circular(MARGIN_SMALL),
         border: (!isBuy)
             ? Border.all(
-                color: Color.fromRGBO(219, 220, 222, 1.0),
+                color: DETAIL_PAGE_OUTLINE_BUTTON_COLOR,
               )
             : null,
       ),
@@ -503,7 +505,7 @@ class BookDetailButtonView extends StatelessWidget {
           buttonText,
           style: TextStyle(
               color:
-                  (!isBuy) ? Color.fromRGBO(6, 119, 192, 1.0) : PRIMARY_COLOR,
+                  (!isBuy) ? DETAIL_PAGE_SOLID_BUTTON_COLOR : PRIMARY_COLOR,
               fontWeight: FontWeight.w600),
         ),
       ),
@@ -524,55 +526,55 @@ class BookRatingAndTypeSectionView extends StatelessWidget {
         Column(
           children: [
             Row(
-              children: [
+              children: const [
                 Text(
                   "4.6",
                   style: TextStyle(
                     fontSize: MARGIN_MEDIUM_2,
-                    color: Color.fromRGBO(95, 98, 102, 1.0),
+                    color: DETAIL_PAGE_RATE_INFO_ICON_COLOR,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(width: MARGIN_SMALL - 2),
                 Icon(
                   Icons.star,
-                  color: Color.fromRGBO(95, 98, 102, 1.0),
+                  color: DETAIL_PAGE_RATE_INFO_ICON_COLOR,
                 )
               ],
             ),
             SizedBox(height: MARGIN_MEDIUM),
-            Text(
+            const Text(
               "1K reviews",
               style: TextStyle(
-                color: Color.fromRGBO(124, 128, 130, 1.0),
+                color: DETAIL_PAGE_RATE_INFO_TEXT_COLOR,
               ),
             ),
           ],
         ),
         SmallLineDivider(),
         Column(
-          children: [
+          children: const [
             Icon(
               Icons.book_outlined,
-              color: Color.fromRGBO(95, 98, 102, 1.0),
+              color: DETAIL_PAGE_RATE_INFO_ICON_COLOR,
             ),
             SizedBox(height: MARGIN_MEDIUM),
             Text(
               "eBook",
               style: TextStyle(
-                color: Color.fromRGBO(124, 128, 130, 1.0),
+                color: DETAIL_PAGE_RATE_INFO_TEXT_COLOR,
               ),
             ),
           ],
         ),
         SmallLineDivider(),
         Column(
-          children: [
+          children: const [
             Text(
               "272",
               style: TextStyle(
                 fontSize: MARGIN_MEDIUM_2,
-                color: Color.fromRGBO(95, 98, 102, 1.0),
+                color: DETAIL_PAGE_RATE_INFO_ICON_COLOR,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -580,23 +582,23 @@ class BookRatingAndTypeSectionView extends StatelessWidget {
             Text(
               "Pages",
               style: TextStyle(
-                color: Color.fromRGBO(124, 128, 130, 1.0),
+                color: DETAIL_PAGE_RATE_INFO_TEXT_COLOR,
               ),
             ),
           ],
         ),
         SmallLineDivider(),
         Column(
-          children: [
+          children: const [
             Icon(
               Icons.gpp_good_outlined,
-              color: Color.fromRGBO(95, 98, 102, 1.0),
+              color:DETAIL_PAGE_RATE_INFO_ICON_COLOR,
             ),
             SizedBox(height: MARGIN_MEDIUM),
             Text(
               "Eligible",
               style: TextStyle(
-                color: Color.fromRGBO(124, 128, 130, 1.0),
+                color: DETAIL_PAGE_RATE_INFO_TEXT_COLOR,
               ),
             ),
           ],
@@ -616,7 +618,7 @@ class SmallLineDivider extends StatelessWidget {
     return Container(
       width: 1,
       height: MARGIN_LARGE,
-      color: Color.fromRGBO(219, 220, 222, 1.0),
+      color: HORIZONTAL_DIVIDER_LINE_COLOR,
     );
   }
 }
@@ -632,7 +634,7 @@ class BookCoverNameAndAuthorSectionView extends StatelessWidget {
           height: 170,
           decoration: BoxDecoration(
             color: Colors.black26,
-            image: DecorationImage(
+            image: const DecorationImage(
               image: NetworkImage(
                 "https://cdn2.penguin.com.au/covers/original/9780857501004.jpg",
               ),
@@ -645,7 +647,7 @@ class BookCoverNameAndAuthorSectionView extends StatelessWidget {
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: const [
               Text(
                 "A Brief History Of Time: From Big Bang To Black Holes",
                 style: TextStyle(

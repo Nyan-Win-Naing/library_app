@@ -35,32 +35,32 @@ class SearchBooksResultPage extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
-              color: Color.fromRGBO(60, 64, 67, 1.0),
+              color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
             ),
           ),
         ),
         title: Text(
           searchedWord,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: MARGIN_MEDIUM_3,
           ),
         ),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: MARGIN_MEDIUM_3),
+            padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
             child: Icon(
               Icons.search,
-              color: Color.fromRGBO(60, 64, 67, 1.0),
+              color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: MARGIN_MEDIUM_3),
+            padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
             child: Icon(
               Icons.mic_outlined,
-              color: Color.fromRGBO(60, 64, 67, 1.0),
+              color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
             ),
           ),
         ],
@@ -69,13 +69,13 @@ class SearchBooksResultPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: MARGIN_MEDIUM_2),
+              const SizedBox(height: MARGIN_MEDIUM_2),
               CategoryChipsSectionView(
                 chipNames: chipNames,
                 runtimeType: runtimeType,
                 isSearchBookResultPage: true,
               ),
-              SizedBox(height: MARGIN_MEDIUM_2),
+              const SizedBox(height: MARGIN_MEDIUM_2),
               SearchBookResultsInListView(suggestionBooksList: suggestionBooksList),
             ],
           ),
@@ -96,8 +96,8 @@ class SearchBookResultsInListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-      physics: NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: suggestionBooksList.length,
       itemBuilder: (context, index) {

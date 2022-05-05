@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:library_app/resources/strings.dart';
 
 class AddShelfPage extends StatefulWidget {
 
@@ -32,9 +33,9 @@ class _AddShelfPageState extends State<AddShelfPage> {
                 Navigator.pop(context);
               }
             },
-            child: Icon(
+            child: const Icon(
               Icons.done,
-              color: Color.fromRGBO(2,119,197, 1.0),
+              color: ADD_SHELF_PAGE_BACK_ICON_COLOR,
               size: MARGIN_XLARGE,
             ),
           ),
@@ -42,7 +43,7 @@ class _AddShelfPageState extends State<AddShelfPage> {
       ),
       body: Container(
         height: 80,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: PRIMARY_COLOR,
           boxShadow: [
             BoxShadow(
@@ -53,23 +54,23 @@ class _AddShelfPageState extends State<AddShelfPage> {
             )
           ],
         ),
-        padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+        padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
         child: TextField(
           controller: addShelfFieldController,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: MARGIN_LARGE,
           ),
           decoration: InputDecoration(
             errorText: _validate ? 'Value Can\'t Be Empty' : null,
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.blue,
                 width: 2,
               ),
             ),
-            hintText: "Shelf name",
-            hintStyle: TextStyle(
-              color: Color.fromRGBO(158,158,158, 1.0),
+            hintText: ADD_SHELF_TEXT_FIELD_HINT_TEXT,
+            hintStyle: const TextStyle(
+              color: ADD_SHELF_PAGE_TEXT_FIELD_HINT_TEXT_COLOR,
               fontSize: MARGIN_LARGE,
               fontWeight: FontWeight.w600,
             ),

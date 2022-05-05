@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:library_app/pages/add_shelf_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:library_app/resources/strings.dart';
 import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/viewitems/icon_chip_view.dart';
 import 'package:library_app/viewitems/shelf_item.dart';
@@ -37,19 +38,19 @@ class _LibraryPageState extends State<LibraryPage> {
             DefaultTabController(
               length: 2,
               child: TabBar(
-                unselectedLabelColor: Color.fromRGBO(121, 122, 123, 1.0),
-                labelColor: Color.fromRGBO(2, 121, 202, 1.0),
+                unselectedLabelColor: TAB_BAR_UNSELECTED_LABEL_COLOR,
+                labelColor: TAB_BAR_SELECTED_COLOR,
                 indicator: const UnderlineTabIndicator(
                   borderSide: BorderSide(
                     width: 3.0,
-                    color: Color.fromRGBO(2, 121, 202, 1.0),
+                    color: TAB_BAR_SELECTED_COLOR,
                   ),
                   insets: EdgeInsets.symmetric(horizontal: MARGIN_XXLARGE),
                 ),
                 tabs: const [
                   Tab(
                     child: Text(
-                      "Your books",
+                      LIBRARY_PAGE_TAB_BAR_YOUR_BOOKS_TEXT,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                       ),
@@ -57,7 +58,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   ),
                   Tab(
                     child: Text(
-                      "Your shelves",
+                      LIBRARY_PAGE_TAB_BAR_YOUR_SHELVES_TEXT,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                       ),
@@ -73,15 +74,15 @@ class _LibraryPageState extends State<LibraryPage> {
             ),
             Container(
               height: 1,
-              color: Color.fromRGBO(219, 220, 222, 1.0),
+              color: HORIZONTAL_DIVIDER_LINE_COLOR,
             ),
-            SizedBox(height: MARGIN_MEDIUM),
+            const SizedBox(height: MARGIN_MEDIUM),
             (tabIndex == 0)
                 ? ChipsAndBookListView(chipNames: chipNames, runtimeType: runtimeType)
                 : Container(
                     height: MediaQuery.of(context).size.height * 2.2 / 3,
                     child: Stack(
-                      children: [
+                      children: const [
                         YourShelvesListSectionView(),
                         Align(
                           alignment: Alignment.bottomCenter,
@@ -105,7 +106,7 @@ class CreateShelfButtonSectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: MARGIN_XLARGE),
+      padding: const EdgeInsets.only(bottom: MARGIN_XLARGE),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -119,9 +120,9 @@ class CreateShelfButtonSectionView extends StatelessWidget {
           width: 130,
           height: 45,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(2, 121, 202, 1.0),
+            color: TAB_BAR_SELECTED_COLOR,
             borderRadius: BorderRadius.circular(MARGIN_LARGE),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.2),
                 spreadRadius: 2,
@@ -133,7 +134,7 @@ class CreateShelfButtonSectionView extends StatelessWidget {
           child: Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: const [
                 Icon(
                   Icons.create_outlined,
                   color: PRIMARY_COLOR,
@@ -141,7 +142,7 @@ class CreateShelfButtonSectionView extends StatelessWidget {
                 ),
                 SizedBox(width: MARGIN_MEDIUM),
                 Text(
-                  "Create New",
+                  YOUR_SHELVES_CREATE_NEW_BUTTON_TEXT,
                   style: TextStyle(
                     color: PRIMARY_COLOR,
                     fontSize: MARGIN_CARD_MEDIUM_2,
@@ -165,56 +166,13 @@ class YourShelvesListSectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.only(top: MARGIN_MEDIUM_3),
+      padding: const EdgeInsets.only(top: MARGIN_MEDIUM_3),
       itemCount: 2,
       // shrinkWrap: true,
       // physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return ShelfItem();
       },
-    );
-  }
-}
-
-class LibraryTabBarSectionView extends StatelessWidget {
-  const LibraryTabBarSectionView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: TabBar(
-        unselectedLabelColor: Color.fromRGBO(121, 122, 123, 1.0),
-        labelColor: Color.fromRGBO(2, 121, 202, 1.0),
-        indicator: const UnderlineTabIndicator(
-          borderSide: BorderSide(
-            width: 3.0,
-            color: Color.fromRGBO(2, 121, 202, 1.0),
-          ),
-          insets: EdgeInsets.symmetric(horizontal: MARGIN_XXLARGE),
-        ),
-        tabs: const [
-          Tab(
-            child: Text(
-              "Your books",
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          Tab(
-            child: Text(
-              "Your shelves",
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          )
-        ],
-        onTap: (index) {},
-      ),
     );
   }
 }

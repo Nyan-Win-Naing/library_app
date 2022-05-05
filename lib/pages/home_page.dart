@@ -5,6 +5,7 @@ import 'package:library_app/pages/more_books_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/show_book_bottom_sheet.dart';
+import 'package:library_app/resources/strings.dart';
 import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/widgets/book_list_title_view.dart';
 import 'package:library_app/widgets/horizontal_book_list_view.dart';
@@ -58,19 +59,19 @@ class _BooksListSectionViewState extends State<BooksListSectionView> {
         DefaultTabController(
           length: 2,
           child: TabBar(
-            unselectedLabelColor: Color.fromRGBO(121, 122, 123, 1.0),
-            labelColor: Color.fromRGBO(2, 121, 202, 1.0),
+            unselectedLabelColor: TAB_BAR_UNSELECTED_LABEL_COLOR,
+            labelColor: TAB_BAR_SELECTED_COLOR,
             indicator: const UnderlineTabIndicator(
               borderSide: BorderSide(
                 width: 3.0,
-                color: Color.fromRGBO(2, 121, 202, 1.0),
+                color: TAB_BAR_SELECTED_COLOR,
               ),
               insets: EdgeInsets.symmetric(horizontal: MARGIN_XXLARGE),
             ),
             tabs: const [
               Tab(
                 child: Text(
-                  "Ebooks",
+                  HOME_PAGE_TAB_BAR_EBOOKS_TEXT,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                   ),
@@ -78,7 +79,7 @@ class _BooksListSectionViewState extends State<BooksListSectionView> {
               ),
               Tab(
                 child: Text(
-                  "Audiobooks",
+                  HOME_PAGE_TAB_BAR_AUDIOBOOKS_TEXT,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                   ),
@@ -92,7 +93,7 @@ class _BooksListSectionViewState extends State<BooksListSectionView> {
             },
           ),
         ),
-        SizedBox(height: MARGIN_MEDIUM_3),
+        const SizedBox(height: MARGIN_MEDIUM_3),
         (tabBarIndex == 0)
             ? BooksByCategoryView(
                 horizontalEbookListTitles: horizontalEbookListTitles,
@@ -134,26 +135,27 @@ class BooksByCategoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: horizontalEbookListTitles.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                margin: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
                 child: BookListTitleView(
                   title: horizontalEbookListTitles[index],
-                  onTap: () => navigateToMoreBooksPage(context, horizontalEbookListTitles[index]),
+                  onTap: () => navigateToMoreBooksPage(
+                      context, horizontalEbookListTitles[index]),
                 ),
               ),
-              SizedBox(height: MARGIN_MEDIUM_2),
+              const SizedBox(height: MARGIN_MEDIUM_2),
               HorizontalBookListView(
                 onTap: () {
                   onTap();
                 },
               ),
-              SizedBox(height: MARGIN_MEDIUM),
+              const SizedBox(height: MARGIN_MEDIUM),
             ],
           );
         },
@@ -165,7 +167,7 @@ class BooksByCategoryView extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MoreBookPage(title: title,),
+        builder: (context) => MoreBookPage(title: title),
       ),
     );
   }
@@ -195,7 +197,7 @@ class HomeCarouselSectionView extends StatelessWidget {
           return Builder(
             builder: (BuildContext context) {
               return Container(
-                width: 200,
+                width: HOME_PAGE_CAROUSEL_ITEM_WIDTH,
                 child: Stack(
                   children: [
                     Container(
@@ -228,7 +230,7 @@ class HomeCarouselSectionView extends StatelessWidget {
                           onTap: () {
                             showBookBottomSheet(context);
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.more_horiz_rounded,
                             color: PRIMARY_COLOR,
                           ),
@@ -245,14 +247,14 @@ class HomeCarouselSectionView extends StatelessWidget {
                         ),
                         child: Container(
                           height: 2,
-                          color: Color.fromRGBO(60, 61, 61, 1.0),
+                          color: HOME_PAGE_CAROUSEL_ITEM_PLAY_LINE_COLOR,
                         ),
                       ),
                     ),
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: MARGIN_MEDIUM,
                           bottom: MARGIN_CARD_MEDIUM_2,
                         ),
@@ -260,10 +262,11 @@ class HomeCarouselSectionView extends StatelessWidget {
                           width: 30,
                           height: 30,
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(0, 0, 0, 0.7),
+                            color:
+                                HOME_PAGE_CAROUSEL_ITEM_ICON_BACKGROUND_COLOR,
                             borderRadius: BorderRadius.circular(MARGIN_SMALL),
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.headphones,
                             color: Colors.white,
                           ),
@@ -273,7 +276,7 @@ class HomeCarouselSectionView extends StatelessWidget {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           right: MARGIN_MEDIUM,
                           bottom: MARGIN_CARD_MEDIUM_2,
                         ),
@@ -281,10 +284,11 @@ class HomeCarouselSectionView extends StatelessWidget {
                           width: 30,
                           height: 30,
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(0, 0, 0, 0.7),
+                            color:
+                                HOME_PAGE_CAROUSEL_ITEM_ICON_BACKGROUND_COLOR,
                             borderRadius: BorderRadius.circular(MARGIN_SMALL),
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.done,
                             color: Colors.white,
                             size: MARGIN_MEDIUM_3,
@@ -312,18 +316,21 @@ class ListTileForBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      visualDensity: VisualDensity(horizontal: 0, vertical: -1),
-      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-      leading: Icon(iconData,
-          size: MARGIN_LARGE, color: Color.fromRGBO(95, 98, 103, 1.0)),
+      visualDensity: const VisualDensity(horizontal: 0, vertical: -1),
+      contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
+      leading: Icon(
+        iconData,
+        size: MARGIN_LARGE,
+        color: BOTTOM_SHEET_LIST_TILE_ICON_COLOR,
+      ),
       title: Transform.translate(
-        offset: Offset(-16, 0),
+        offset: const Offset(-16, 0),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: MARGIN_CARD_MEDIUM_2 + 2,
             fontWeight: FontWeight.w500,
-            color: Color.fromRGBO(70, 71, 73, 1.0),
+            color: BOTTOM_SHEET_LIST_TILE_TEXT_COLOR,
           ),
         ),
       ),

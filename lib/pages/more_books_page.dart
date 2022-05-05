@@ -23,7 +23,7 @@ class MoreBookPage extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
             ),
@@ -31,7 +31,7 @@ class MoreBookPage extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: MARGIN_MEDIUM_2 + 2,
           ),
