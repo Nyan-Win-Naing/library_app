@@ -3,9 +3,10 @@ import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/viewitems/book_view.dart';
-import 'package:library_app/viewitems/cancel_chip_view.dart';
+import 'package:library_app/viewitems/icon_chip_view.dart';
 import 'package:library_app/viewitems/text_chip_view.dart';
 import 'package:library_app/viewitems/your_book_item_view.dart';
+import 'package:library_app/widgets/category_chips_section_view.dart';
 import 'package:library_app/widgets/show_in_2x_grid_view.dart';
 import 'package:library_app/widgets/show_in_3x_grid_view.dart';
 
@@ -23,7 +24,7 @@ class ChipsAndBookListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BookCategoryChipSectionView(
+        CategoryChipsSectionView(
             chipNames: chipNames, runtimeType: runtimeType),
         SizedBox(height: MARGIN_MEDIUM_3),
         Padding(
@@ -31,40 +32,6 @@ class ChipsAndBookListView extends StatelessWidget {
           child: YourBookListSectionView(),
         ),
       ],
-    );
-  }
-}
-
-class BookCategoryChipSectionView extends StatelessWidget {
-  const BookCategoryChipSectionView({
-    Key? key,
-    required this.chipNames,
-    required this.runtimeType,
-  }) : super(key: key);
-
-  final List chipNames;
-  final Type runtimeType;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      child: ListView.builder(
-        padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
-        scrollDirection: Axis.horizontal,
-        itemCount: chipNames.length,
-        itemBuilder: (context, index) {
-          return ((chipNames[index]).runtimeType.toString() == "IconData")
-              ? Padding(
-                  padding: const EdgeInsets.only(right: MARGIN_MEDIUM),
-                  child: CancelChipView(iconData: chipNames[index]),
-                )
-              : Padding(
-                  padding: const EdgeInsets.only(right: MARGIN_MEDIUM),
-                  child: TextChipView(chipText: chipNames[index]),
-                );
-        },
-      ),
     );
   }
 }

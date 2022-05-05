@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
-class CancelChipView extends StatelessWidget {
+class IconChipView extends StatelessWidget {
 
   final IconData iconData;
+  bool isSearchBookResultPage;
 
-  CancelChipView({required this.iconData});
+  IconChipView({required this.iconData, this.isSearchBookResultPage = false});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:library_app/pages/add_shelf_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/viewitems/book_view.dart';
-import 'package:library_app/viewitems/cancel_chip_view.dart';
+import 'package:library_app/viewitems/icon_chip_view.dart';
 import 'package:library_app/viewitems/shelf_item.dart';
 import 'package:library_app/viewitems/text_chip_view.dart';
 import 'package:library_app/viewitems/your_book_item_view.dart';

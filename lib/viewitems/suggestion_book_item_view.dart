@@ -18,7 +18,7 @@ class SuggestionBookItemView extends StatelessWidget {
       child: Row(
         children: [
           Image.network(
-            "https://kbimages1-a.akamaihd.net/5d33d215-f021-489f-9308-ac6851106373/353/569/90/False/war-of-the-squirrels.jpg",
+            bookVo.imageUrl,
             width: 50,
             height: 70,
             fit: BoxFit.fill,

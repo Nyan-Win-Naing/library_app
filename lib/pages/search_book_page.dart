@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/dummy/dummy_book_list.dart';
 import 'package:library_app/dummy/dummy_book_vo.dart';
+import 'package:library_app/pages/book_search_and_suggestion_page.dart';
+import 'package:library_app/pages/search_books_result_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/debouncer.dart';
 import 'package:library_app/resources/dimens.dart';
@@ -48,7 +50,15 @@ class _SearchBookPageState extends State<SearchBookPage> {
           autofocus: true,
           textInputAction: TextInputAction.done,
           onSubmitted: (value) {
-            print("Submitted Value is: $value");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SearchBooksResultPage(
+                  suggestionBooksList: suggestionBooksList,
+                  searchedWord: value,
+                ),
+              ),
+            );
           },
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -73,12 +83,8 @@ class _SearchBookPageState extends State<SearchBookPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: MARGIN_MEDIUM_2),
-              Visibility(
-                visible: (suggestionBooksList.length != 0) ? true : false,
-                child: SuggestionBookList(suggestionBookList: suggestionBooksList),
-              ),
-              DefaultSuggestionSectionView(),
+              BookSearchAndSuggestionPage(
+                  suggestionBooksList: suggestionBooksList),
             ],
           ),
         ),
@@ -106,8 +112,30 @@ class _SearchBookPageState extends State<SearchBookPage> {
   }
 }
 
-class SuggestionBookList extends StatelessWidget {
+class BookSearchAndSuggestionPage extends StatelessWidget {
+  const BookSearchAndSuggestionPage({
+    Key? key,
+    required this.suggestionBooksList,
+  }) : super(key: key);
 
+  final List<DummyBookVO> suggestionBooksList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: MARGIN_MEDIUM_2),
+        Visibility(
+          visible: (suggestionBooksList.length != 0) ? true : false,
+          child: SuggestionBookList(suggestionBookList: suggestionBooksList),
+        ),
+        DefaultSuggestionSectionView(),
+      ],
+    );
+  }
+}
+
+class SuggestionBookList extends StatelessWidget {
   final List<DummyBookVO> suggestionBookList;
 
   SuggestionBookList({required this.suggestionBookList});
@@ -122,7 +150,9 @@ class SuggestionBookList extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemCount: suggestionBookList.length,
           itemBuilder: (context, index) {
-            return SuggestionBookItemView(bookVo: suggestionBookList[index],);
+            return SuggestionBookItemView(
+              bookVo: suggestionBookList[index],
+            );
           },
         ),
       ),

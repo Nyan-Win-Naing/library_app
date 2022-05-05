@@ -2,8 +2,14 @@ class DummyBookVO {
   String bookName;
   String author;
   String description;
+  String imageUrl;
 
-  DummyBookVO({required this.bookName, required this.author, required this.description});
+  DummyBookVO({
+    required this.bookName,
+    required this.author,
+    required this.description,
+    required this.imageUrl,
+  });
 
   @override
   String toString() {

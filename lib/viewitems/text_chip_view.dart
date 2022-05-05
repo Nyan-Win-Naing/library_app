@@ -5,8 +5,9 @@ import 'package:library_app/resources/dimens.dart';
 class TextChipView extends StatelessWidget {
 
   final String chipText;
+  bool isSearchBookResultPage;
 
-  TextChipView({required this.chipText});
+  TextChipView({required this.chipText, this.isSearchBookResultPage = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class TextChipView extends StatelessWidget {
         chipText,
         style: TextStyle(
           color: Color.fromRGBO(94,99,103, 1.0),
-          fontSize: MARGIN_CARD_MEDIUM_2,
+          fontSize: (!isSearchBookResultPage) ? MARGIN_CARD_MEDIUM_2 : MARGIN_MEDIUM_2 - 2,
           fontWeight: FontWeight.w500,
         ),
       ),
