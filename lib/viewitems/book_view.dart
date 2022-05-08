@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/show_book_bottom_sheet.dart';
@@ -8,16 +9,24 @@ import 'package:library_app/resources/show_book_bottom_sheet.dart';
 class BookView extends StatelessWidget {
   final bool isHomePage;
   final bool is3xGrid;
-  final Function onTap;
+  final Function(String) onTap;
 
-  BookView({this.isHomePage = true, this.is3xGrid = false, required this.onTap});
+  final BookVO? book;
+
+  BookView({
+    this.isHomePage = true,
+    this.is3xGrid = false,
+    required this.onTap,
+    required this.book,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: () => onTap(book?.title ?? ""),
       child: Container(
-        margin: EdgeInsets.only(right: (!is3xGrid) ? MARGIN_MEDIUM_3 : MARGIN_CARD_MEDIUM_2 - 2),
+        margin: EdgeInsets.only(
+            right: (!is3xGrid) ? MARGIN_MEDIUM_3 : MARGIN_CARD_MEDIUM_2 - 2),
         width: (!is3xGrid) ? 160 : 120,
         // color: Colors.blue,
         child: Column(
@@ -32,9 +41,8 @@ class BookView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(MARGIN_MEDIUM),
                       image: DecorationImage(
                         image: NetworkImage(
-                          (isHomePage) ?
-                          "https://images-na.ssl-images-amazon.com/images/I/41LWgFsaBCL._SX329_BO1,204,203,200_.jpg"
-                          :  "https://images-na.ssl-images-amazon.com/images/I/412llgHC2TL._SX329_BO1,204,203,200_.jpg",
+                          book?.bookImage ??
+                              "https://www.richardsalter.com/wp-content/uploads/2011/07/Cover-not-available.jpg",
                         ),
                         fit: BoxFit.fill,
                       ),
@@ -72,12 +80,16 @@ class BookView extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(
                           top: MARGIN_MEDIUM,
-                          left: (!is3xGrid) ? MARGIN_CARD_MEDIUM_2 : MARGIN_MEDIUM,
+                          left: (!is3xGrid)
+                              ? MARGIN_CARD_MEDIUM_2
+                              : MARGIN_MEDIUM,
                         ),
                         child: Container(
                           padding: EdgeInsets.symmetric(
                             vertical: MARGIN_SMALL,
-                            horizontal: (!is3xGrid) ? MARGIN_CARD_MEDIUM_2 : MARGIN_MEDIUM,
+                            horizontal: (!is3xGrid)
+                                ? MARGIN_CARD_MEDIUM_2
+                                : MARGIN_MEDIUM,
                           ),
                           decoration: BoxDecoration(
                             color: Color.fromRGBO(0, 0, 0, 0.7),
@@ -87,14 +99,15 @@ class BookView extends StatelessWidget {
                             "Sample",
                             style: TextStyle(
                               color: PRIMARY_COLOR,
-                              fontSize: (!is3xGrid) ? MARGIN_CARD_MEDIUM_2 : MARGIN_MEDIUM + 2,
+                              fontSize: (!is3xGrid)
+                                  ? MARGIN_CARD_MEDIUM_2
+                                  : MARGIN_MEDIUM + 2,
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-
                   Visibility(
                     visible: (isHomePage) ? false : true,
                     child: Align(
@@ -102,7 +115,9 @@ class BookView extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(
                           bottom: MARGIN_MEDIUM,
-                          right: (!is3xGrid) ? MARGIN_CARD_MEDIUM_2 : MARGIN_MEDIUM,
+                          right: (!is3xGrid)
+                              ? MARGIN_CARD_MEDIUM_2
+                              : MARGIN_MEDIUM,
                         ),
                         child: Container(
                           width: (!is3xGrid) ? 30 : 20,
@@ -114,7 +129,8 @@ class BookView extends StatelessWidget {
                           child: Icon(
                             Icons.download_done,
                             color: Colors.white,
-                            size: (!is3xGrid) ? MARGIN_MEDIUM_3 : MARGIN_MEDIUM_2,
+                            size:
+                                (!is3xGrid) ? MARGIN_MEDIUM_3 : MARGIN_MEDIUM_2,
                           ),
                         ),
                       ),
@@ -125,18 +141,20 @@ class BookView extends StatelessWidget {
             ),
             SizedBox(height: MARGIN_CARD_MEDIUM_2),
             Text(
-              "Lean UX: Applying",
+              book?.title ?? "",
               style: TextStyle(
                 color: Color.fromRGBO(94, 99, 103, 1.0),
-                fontSize: (!is3xGrid) ? MARGIN_MEDIUM_2 - 2 : MARGIN_CARD_MEDIUM_2,
+                fontSize:
+                    (!is3xGrid) ? MARGIN_MEDIUM_2 - 2 : MARGIN_CARD_MEDIUM_2,
               ),
             ),
             SizedBox(height: MARGIN_SMALL),
             Text(
-              "Jeff Gothelf",
+              book?.author ?? "",
               style: TextStyle(
                 color: Color.fromRGBO(94, 99, 103, 1.0),
-                fontSize: (!is3xGrid) ? MARGIN_MEDIUM_2 - 2 : MARGIN_CARD_MEDIUM_2,
+                fontSize:
+                    (!is3xGrid) ? MARGIN_MEDIUM_2 - 2 : MARGIN_CARD_MEDIUM_2,
               ),
             ),
           ],

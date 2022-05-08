@@ -1,5 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/data/models/book_model.dart';
+import 'package:library_app/data/models/book_model_impl.dart';
+import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/data/vos/horizontal_book_list_item_vo.dart';
 import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/pages/more_books_page.dart';
 import 'package:library_app/resources/colors.dart';
@@ -10,7 +14,42 @@ import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/widgets/book_list_title_view.dart';
 import 'package:library_app/widgets/horizontal_book_list_view.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  /// State
+  List<HorizontalBookListItemVO>? hBookLists;
+  List<BookVO>? bookListForCarousel;
+
+  /// Model
+  BookModel bModel = BookModelImpl();
+
+  @override
+  void initState() {
+    /// Get Horizontal Book List Items
+    bModel.getHorizontalBookListItems("2022-05-06").then((hBookLists) {
+      setState(() {
+        this.hBookLists = hBookLists;
+      });
+    }).catchError((error) {
+      debugPrint(error.toString());
+    });
+
+    /// Get Book List For Carousel From Database
+    bModel.getBookListForCarouselFromDatabase().listen((bookList) {
+      setState(() {
+        this.bookListForCarousel = bookList;
+      });
+    }).onError((error) {
+      debugPrint(error.toString());
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -19,8 +58,11 @@ class HomePage extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            HomeCarouselSectionView(screenHeight: screenHeight),
-            BooksListSectionView(),
+            (bookListForCarousel != null &&
+                    (bookListForCarousel?.isNotEmpty ?? false))
+                ? HomeCarouselSectionView(screenHeight: screenHeight, bookList: bookListForCarousel,)
+                : Container(),
+            BooksListSectionView(hBookLists: hBookLists),
           ],
         ),
       ),
@@ -29,9 +71,9 @@ class HomePage extends StatelessWidget {
 }
 
 class BooksListSectionView extends StatefulWidget {
-  BooksListSectionView({
-    Key? key,
-  }) : super(key: key);
+  final List<HorizontalBookListItemVO>? hBookLists;
+
+  BooksListSectionView({required this.hBookLists});
 
   @override
   State<BooksListSectionView> createState() => _BooksListSectionViewState();
@@ -96,26 +138,30 @@ class _BooksListSectionViewState extends State<BooksListSectionView> {
         const SizedBox(height: MARGIN_MEDIUM_3),
         (tabBarIndex == 0)
             ? BooksByCategoryView(
+                hBookLists: widget.hBookLists,
                 horizontalEbookListTitles: horizontalEbookListTitles,
-                onTap: () {
-                  _navigateToBookDetailPage(context);
+                onTap: (title) {
+                  _navigateToBookDetailPage(context, title);
                 },
               )
             : BooksByCategoryView(
+                hBookLists: widget.hBookLists,
                 horizontalEbookListTitles: horizontalAudioBookListTitles,
-                onTap: () {
-                  _navigateToBookDetailPage(context);
+                onTap: (title) {
+                  _navigateToBookDetailPage(context, title);
                 },
               ),
       ],
     );
   }
 
-  void _navigateToBookDetailPage(BuildContext context) {
+  void _navigateToBookDetailPage(BuildContext context, String title) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BookDetailPage(),
+        builder: (context) => BookDetailPage(
+          title: title,
+        ),
       ),
     );
   }
@@ -125,49 +171,57 @@ class BooksByCategoryView extends StatelessWidget {
   const BooksByCategoryView({
     Key? key,
     required this.horizontalEbookListTitles,
+    required this.hBookLists,
     required this.onTap,
   }) : super(key: key);
 
   final List<String> horizontalEbookListTitles;
-  final Function onTap;
+  final List<HorizontalBookListItemVO>? hBookLists;
+  final Function(String) onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: horizontalEbookListTitles.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                child: BookListTitleView(
-                  title: horizontalEbookListTitles[index],
-                  onTap: () => navigateToMoreBooksPage(
-                      context, horizontalEbookListTitles[index]),
-                ),
-              ),
-              const SizedBox(height: MARGIN_MEDIUM_2),
-              HorizontalBookListView(
-                onTap: () {
-                  onTap();
-                },
-              ),
-              const SizedBox(height: MARGIN_MEDIUM),
-            ],
+    return (hBookLists != null)
+        ? Container(
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: hBookLists?.length ?? 0,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: MARGIN_MEDIUM_3),
+                      child: BookListTitleView(
+                        title: hBookLists?[index].listName ?? "",
+                        onTap: () => navigateToMoreBooksPage(
+                            context, hBookLists?[index]),
+                      ),
+                    ),
+                    const SizedBox(height: MARGIN_MEDIUM_2),
+                    HorizontalBookListView(
+                      hBooks: hBookLists?[index].books ?? [],
+                      onTap: (title) {
+                        onTap(title);
+                      },
+                    ),
+                    const SizedBox(height: MARGIN_MEDIUM),
+                  ],
+                );
+              },
+            ),
+          )
+        : const Center(
+            child: CircularProgressIndicator(),
           );
-        },
-      ),
-    );
   }
 
-  void navigateToMoreBooksPage(BuildContext context, String title) {
+  void navigateToMoreBooksPage(BuildContext context, HorizontalBookListItemVO? hBookListItem) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MoreBookPage(title: title),
+        builder: (context) => MoreBookPage(hBookListItem: hBookListItem),
       ),
     );
   }
@@ -177,9 +231,11 @@ class HomeCarouselSectionView extends StatelessWidget {
   const HomeCarouselSectionView({
     Key? key,
     required this.screenHeight,
+    required this.bookList,
   }) : super(key: key);
 
   final double screenHeight;
+  final List<BookVO>? bookList;
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +249,7 @@ class HomeCarouselSectionView extends StatelessWidget {
           enableInfiniteScroll: false,
           enlargeCenterPage: true,
         ),
-        items: [1, 2, 3, 4, 5].map((i) {
+        items: bookList?.map((book) {
           return Builder(
             builder: (BuildContext context) {
               return Container(
@@ -204,10 +260,9 @@ class HomeCarouselSectionView extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.black12,
                         borderRadius: BorderRadius.circular(MARGIN_MEDIUM),
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                              'https://play-lh.googleusercontent.com/LaI7iXfir4nzquNFFw4N1_lWpMMsIqJ5f-bKPe3nGssvx4OBzm4s6NVf2eS3eLUhHogM1fMaK2csEQ=s400-rw'),
-                          fit: BoxFit.fill,
+                        image: DecorationImage(
+                          image: NetworkImage(book.bookImage ?? "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png"),
+                          fit: BoxFit.cover,
                         ),
                         boxShadow: const [
                           BoxShadow(

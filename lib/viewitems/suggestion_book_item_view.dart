@@ -16,7 +16,7 @@ class SuggestionBookItemView extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BookDetailPage(),
+            builder: (context) => BookDetailPage(title: "",),
           ),
         );
       },

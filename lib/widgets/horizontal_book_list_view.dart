@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/data/vos/horizontal_book_list_item_vo.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/viewitems/book_view.dart';
 
 class HorizontalBookListView extends StatelessWidget {
-  final Function onTap;
+  final List<BookVO>? hBooks;
+  final Function(String) onTap;
 
-  HorizontalBookListView({required this.onTap});
+  HorizontalBookListView({required this.onTap, required this.hBooks});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 280,
+      height: 290,
       // color: Colors.black26,
       child: ListView.builder(
         padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: hBooks?.length ?? 0,
         itemBuilder: (context, index) {
           return BookView(
-            onTap: () {
-              this.onTap();
+            book: hBooks?[index],
+            onTap: (title) {
+              this.onTap(title);
             },
           );
         },

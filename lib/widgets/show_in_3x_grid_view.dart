@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/viewitems/book_view.dart';
 
 class ShowIn3xGridView extends StatelessWidget {
-  final Function onTap;
+  final Function(String) onTap;
 
   ShowIn3xGridView({required this.onTap});
 
@@ -22,10 +23,11 @@ class ShowIn3xGridView extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(bottom: 0),
           child: BookView(
+            book: BookVO(),
             isHomePage: false,
             is3xGrid: true,
-            onTap: () {
-              onTap();
+            onTap: (title) {
+              onTap(title);
             },
           ),
         );

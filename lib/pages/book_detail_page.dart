@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/models/book_model.dart';
+import 'package:library_app/data/models/book_model_impl.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/strings.dart';
@@ -6,7 +9,36 @@ import 'package:library_app/widgets/horizontal_book_list_view.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class BookDetailPage extends StatelessWidget {
+class BookDetailPage extends StatefulWidget {
+  final String title;
+
+  BookDetailPage({required this.title});
+
+  @override
+  State<BookDetailPage> createState() => _BookDetailPageState();
+}
+
+class _BookDetailPageState extends State<BookDetailPage> {
+  /// Model
+  BookModel bookModel = BookModelImpl();
+
+  /// States
+  BookVO? book;
+
+  @override
+  void initState() {
+    /// Get Book Detail From Database
+    bookModel.getBookDetailFromDatabase(widget.title).listen((bookDetail) {
+      setState(() {
+        this.book = bookDetail;
+      });
+    }).onError((error) {
+      debugPrint(error.toString());
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +89,7 @@ class BookDetailPage extends StatelessWidget {
                   horizontal: MARGIN_MEDIUM_3,
                   vertical: MARGIN_XLARGE,
                 ),
-                child: BookCoverNameAndAuthorSectionView(),
+                child: BookCoverNameAndAuthorSectionView(book: book),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
@@ -92,11 +124,18 @@ class BookDetailPage extends StatelessWidget {
                 color: HORIZONTAL_DIVIDER_LINE_LIGHT_COLOR,
               ),
               const SizedBox(height: MARGIN_XLARGE),
-              AboutEbookOrAuthorSectionView(title: "About this eBook"),
+              AboutEbookOrAuthorSectionView(
+                title: "About this eBook",
+                about: book?.description ?? "",
+              ),
               const SizedBox(height: MARGIN_XLARGE),
               const RatingAndReviewSectionView(),
               const SizedBox(height: MARGIN_XLARGE),
-              AboutEbookOrAuthorSectionView(title: "About the author"),
+              AboutEbookOrAuthorSectionView(
+                title: "About the author",
+                about:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
+              ),
               const SizedBox(height: MARGIN_XLARGE),
               BookDetailHorizontalBookListView(
                 title: "Similar ebooks",
@@ -125,7 +164,7 @@ class BookDetailPage extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BookDetailPage(),
+        builder: (context) => BookDetailPage(title: ""),
       ),
     );
   }
@@ -174,8 +213,8 @@ class RateThisEbookSectionView extends StatelessWidget {
         ),
         const SizedBox(height: MARGIN_MEDIUM_2),
         Center(
-          child:
-              BookDetailButtonView(isBuy: false, buttonText: DETAIL_PAGE_WRITE_A_REVIEW_BUTTON_TEXT),
+          child: BookDetailButtonView(
+              isBuy: false, buttonText: DETAIL_PAGE_WRITE_A_REVIEW_BUTTON_TEXT),
         )
       ],
     );
@@ -198,7 +237,8 @@ class BookDetailHorizontalBookListView extends StatelessWidget {
         ),
         const SizedBox(height: MARGIN_MEDIUM_2),
         HorizontalBookListView(
-          onTap: () {
+          hBooks: [],
+          onTap: (title) {
             onTap();
           },
         ),
@@ -423,8 +463,9 @@ class LinearProgressBarView extends StatelessWidget {
 
 class AboutEbookOrAuthorSectionView extends StatelessWidget {
   final String title;
+  final String about;
 
-  AboutEbookOrAuthorSectionView({required this.title});
+  AboutEbookOrAuthorSectionView({required this.title, required this.about});
 
   @override
   Widget build(BuildContext context) {
@@ -434,8 +475,8 @@ class AboutEbookOrAuthorSectionView extends StatelessWidget {
         children: [
           BookDetailTitleView(title: title),
           SizedBox(height: MARGIN_MEDIUM_2),
-          const Text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nibh mauris cursus mattis. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. A iaculis at erat pe",
+          Text(
+            about,
             style: TextStyle(
               color: Color.fromRGBO(124, 128, 130, 1.0),
               height: 1.4,
@@ -504,8 +545,7 @@ class BookDetailButtonView extends StatelessWidget {
         child: Text(
           buttonText,
           style: TextStyle(
-              color:
-                  (!isBuy) ? DETAIL_PAGE_SOLID_BUTTON_COLOR : PRIMARY_COLOR,
+              color: (!isBuy) ? DETAIL_PAGE_SOLID_BUTTON_COLOR : PRIMARY_COLOR,
               fontWeight: FontWeight.w600),
         ),
       ),
@@ -592,7 +632,7 @@ class BookRatingAndTypeSectionView extends StatelessWidget {
           children: const [
             Icon(
               Icons.gpp_good_outlined,
-              color:DETAIL_PAGE_RATE_INFO_ICON_COLOR,
+              color: DETAIL_PAGE_RATE_INFO_ICON_COLOR,
             ),
             SizedBox(height: MARGIN_MEDIUM),
             Text(
@@ -624,6 +664,10 @@ class SmallLineDivider extends StatelessWidget {
 }
 
 class BookCoverNameAndAuthorSectionView extends StatelessWidget {
+  final BookVO? book;
+
+  BookCoverNameAndAuthorSectionView({required this.book});
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -634,9 +678,10 @@ class BookCoverNameAndAuthorSectionView extends StatelessWidget {
           height: 170,
           decoration: BoxDecoration(
             color: Colors.black26,
-            image: const DecorationImage(
+            image: DecorationImage(
               image: NetworkImage(
-                "https://cdn2.penguin.com.au/covers/original/9780857501004.jpg",
+                book?.bookImage ??
+                    "https://www.richardsalter.com/wp-content/uploads/2011/07/Cover-not-available.jpg",
               ),
               fit: BoxFit.fill,
             ),
@@ -647,10 +692,10 @@ class BookCoverNameAndAuthorSectionView extends StatelessWidget {
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                "A Brief History Of Time: From Big Bang To Black Holes",
-                style: TextStyle(
+                book?.title ?? "",
+                style: const TextStyle(
                   fontSize: MARGIN_LARGE,
                   fontWeight: FontWeight.w600,
                   height: 1.4,
@@ -658,16 +703,16 @@ class BookCoverNameAndAuthorSectionView extends StatelessWidget {
               ),
               SizedBox(height: MARGIN_XLARGE),
               Text(
-                "Stephen Hawking",
-                style: TextStyle(
+                book?.author ?? "",
+                style: const TextStyle(
                   color: Color.fromRGBO(10, 118, 189, 1.0),
                   fontWeight: FontWeight.w600,
                 ),
               ),
               SizedBox(height: MARGIN_MEDIUM),
               Text(
-                "Random House",
-                style: TextStyle(
+                book?.publisher ?? "",
+                style: const TextStyle(
                   color: Color.fromRGBO(94, 98, 101, 1.0),
                 ),
               ),
