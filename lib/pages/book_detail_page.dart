@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/blocs/book_detail_bloc.dart';
 import 'package:library_app/data/models/book_model.dart';
 import 'package:library_app/data/models/book_model_impl.dart';
 import 'package:library_app/data/vos/book_vo.dart';
@@ -8,152 +9,135 @@ import 'package:library_app/resources/strings.dart';
 import 'package:library_app/widgets/horizontal_book_list_view.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
-class BookDetailPage extends StatefulWidget {
+class BookDetailPage extends StatelessWidget {
   final String title;
 
   BookDetailPage({required this.title});
 
   @override
-  State<BookDetailPage> createState() => _BookDetailPageState();
-}
-
-class _BookDetailPageState extends State<BookDetailPage> {
-  /// Model
-  BookModel bookModel = BookModelImpl();
-
-  /// States
-  BookVO? book;
-
-  @override
-  void initState() {
-    /// Get Book Detail From Database
-    bookModel.getBookDetailFromDatabase(widget.title).listen((bookDetail) {
-      setState(() {
-        this.book = bookDetail;
-      });
-    }).onError((error) {
-      debugPrint(error.toString());
-    });
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PRIMARY_COLOR,
-      appBar: AppBar(
-        elevation: 0,
+    return ChangeNotifierProvider(
+      create: (context) => BookDetailBloc(title),
+      child: Scaffold(
         backgroundColor: PRIMARY_COLOR,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.keyboard_arrow_left_sharp,
-            color: SECONDARY_COLOR,
-            size: MARGIN_XXLARGE,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: PRIMARY_COLOR,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.keyboard_arrow_left_sharp,
+              color: SECONDARY_COLOR,
+              size: MARGIN_XXLARGE,
+            ),
           ),
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(right: MARGIN_LARGE),
+              child: Icon(
+                Icons.search,
+                color: SECONDARY_COLOR,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: MARGIN_LARGE),
+              child: Icon(
+                Icons.bookmark_add_outlined,
+                color: SECONDARY_COLOR,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
+              child: Icon(
+                Icons.more_vert,
+                color: SECONDARY_COLOR,
+              ),
+            ),
+          ],
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: MARGIN_LARGE),
-            child: Icon(
-              Icons.search,
-              color: SECONDARY_COLOR,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: MARGIN_LARGE),
-            child: Icon(
-              Icons.bookmark_add_outlined,
-              color: SECONDARY_COLOR,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
-            child: Icon(
-              Icons.more_vert,
-              color: SECONDARY_COLOR,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: MARGIN_MEDIUM_3,
-                  vertical: MARGIN_XLARGE,
+        body: Container(
+          child: Selector<BookDetailBloc, BookVO?>(
+            selector: (context, bloc) => bloc.book,
+            builder: (context, book, child) =>
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: MARGIN_MEDIUM_3,
+                          vertical: MARGIN_XLARGE,
+                        ),
+                        child: BookCoverNameAndAuthorSectionView(book: book),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                        child: BookRatingAndTypeSectionView(),
+                      ),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            BookDetailButtonView(
+                                isBuy: false, buttonText: "Free sample"),
+                            BookDetailButtonView(
+                                isBuy: true, buttonText: "Buy SGD 15.30"),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      const Text(
+                        DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT,
+                        style: TextStyle(
+                          color: DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT_COLOR,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                        height: 1,
+                        color: HORIZONTAL_DIVIDER_LINE_LIGHT_COLOR,
+                      ),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      AboutEbookOrAuthorSectionView(
+                        title: "About this eBook",
+                        about: book?.description ?? "",
+                      ),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      const RatingAndReviewSectionView(),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      AboutEbookOrAuthorSectionView(
+                        title: "About the author",
+                        about:
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
+                      ),
+                      const SizedBox(height: MARGIN_XLARGE),
+                      BookDetailHorizontalBookListView(
+                        title: "Similar ebooks",
+                        onTap: () {
+                          _navigateToBookDetailPage(context);
+                        },
+                      ),
+                      const SizedBox(height: MARGIN_MEDIUM_3),
+                      BookDetailHorizontalBookListView(
+                        title: "More by Stephen Hawking",
+                        onTap: () {
+                          _navigateToBookDetailPage(context);
+                        },
+                      ),
+                      const SizedBox(height: MARGIN_MEDIUM_3),
+                      const RateThisEbookSectionView(),
+                      const SizedBox(height: MARGIN_MEDIUM_3),
+                    ],
+                  ),
                 ),
-                child: BookCoverNameAndAuthorSectionView(book: book),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                child: BookRatingAndTypeSectionView(),
-              ),
-              const SizedBox(height: MARGIN_XLARGE),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BookDetailButtonView(
-                        isBuy: false, buttonText: "Free sample"),
-                    BookDetailButtonView(
-                        isBuy: true, buttonText: "Buy SGD 15.30"),
-                  ],
-                ),
-              ),
-              const SizedBox(height: MARGIN_XLARGE),
-              const Text(
-                DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT,
-                style: TextStyle(
-                  color: DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT_COLOR,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: MARGIN_XLARGE),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                height: 1,
-                color: HORIZONTAL_DIVIDER_LINE_LIGHT_COLOR,
-              ),
-              const SizedBox(height: MARGIN_XLARGE),
-              AboutEbookOrAuthorSectionView(
-                title: "About this eBook",
-                about: book?.description ?? "",
-              ),
-              const SizedBox(height: MARGIN_XLARGE),
-              const RatingAndReviewSectionView(),
-              const SizedBox(height: MARGIN_XLARGE),
-              AboutEbookOrAuthorSectionView(
-                title: "About the author",
-                about:
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
-              ),
-              const SizedBox(height: MARGIN_XLARGE),
-              BookDetailHorizontalBookListView(
-                title: "Similar ebooks",
-                onTap: () {
-                  _navigateToBookDetailPage(context);
-                },
-              ),
-              const SizedBox(height: MARGIN_MEDIUM_3),
-              BookDetailHorizontalBookListView(
-                title: "More by Stephen Hawking",
-                onTap: () {
-                  _navigateToBookDetailPage(context);
-                },
-              ),
-              const SizedBox(height: MARGIN_MEDIUM_3),
-              const RateThisEbookSectionView(),
-              const SizedBox(height: MARGIN_MEDIUM_3),
-            ],
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/blocs/home_bloc.dart';
 import 'package:library_app/data/models/book_model.dart';
 import 'package:library_app/data/models/book_model_impl.dart';
 import 'package:library_app/data/vos/book_vo.dart';
@@ -13,6 +14,7 @@ import 'package:library_app/resources/strings.dart';
 import 'package:library_app/viewitems/book_view.dart';
 import 'package:library_app/widgets/book_list_title_view.dart';
 import 'package:library_app/widgets/horizontal_book_list_view.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,50 +22,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  /// State
-  List<HorizontalBookListItemVO>? hBookLists;
-  List<BookVO>? bookListForCarousel;
-
-  /// Model
-  BookModel bModel = BookModelImpl();
-
-  @override
-  void initState() {
-    /// Get Horizontal Book List Items
-    bModel.getHorizontalBookListItems("2022-05-06").then((hBookLists) {
-      setState(() {
-        this.hBookLists = hBookLists;
-      });
-    }).catchError((error) {
-      debugPrint(error.toString());
-    });
-
-    /// Get Book List For Carousel From Database
-    bModel.getBookListForCarouselFromDatabase().listen((bookList) {
-      setState(() {
-        this.bookListForCarousel = bookList;
-      });
-    }).onError((error) {
-      debugPrint(error.toString());
-    });
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    return Container(
-      color: PRIMARY_COLOR,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            (bookListForCarousel != null &&
-                    (bookListForCarousel?.isNotEmpty ?? false))
-                ? HomeCarouselSectionView(screenHeight: screenHeight, bookList: bookListForCarousel,)
-                : Container(),
-            BooksListSectionView(hBookLists: hBookLists),
-          ],
+    return ChangeNotifierProvider(
+      create: (context) => HomeBloc(),
+      child: Container(
+        color: PRIMARY_COLOR,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Selector<HomeBloc, List<BookVO>>(
+                selector: (context, bloc) => bloc.bookListForCarousel ?? [],
+                builder: (context, bookListForCarousel, child) => Container(
+                  child: (bookListForCarousel != null &&
+                          (bookListForCarousel.isNotEmpty))
+                      ? HomeCarouselSectionView(
+                          screenHeight: screenHeight,
+                          bookList: bookListForCarousel,
+                        )
+                      : Container(),
+                ),
+              ),
+              Selector<HomeBloc, List<HorizontalBookListItemVO>>(
+                selector: (context, bloc) => bloc.hBookLists ?? [],
+                builder: (context, hBookLists, child) =>
+                    BooksListSectionView(hBookLists: hBookLists),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -217,7 +204,8 @@ class BooksByCategoryView extends StatelessWidget {
           );
   }
 
-  void navigateToMoreBooksPage(BuildContext context, HorizontalBookListItemVO? hBookListItem) {
+  void navigateToMoreBooksPage(
+      BuildContext context, HorizontalBookListItemVO? hBookListItem) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -261,7 +249,8 @@ class HomeCarouselSectionView extends StatelessWidget {
                         color: Colors.black12,
                         borderRadius: BorderRadius.circular(MARGIN_MEDIUM),
                         image: DecorationImage(
-                          image: NetworkImage(book.bookImage ?? "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png"),
+                          image: NetworkImage(book.bookImage ??
+                              "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png"),
                           fit: BoxFit.cover,
                         ),
                         boxShadow: const [

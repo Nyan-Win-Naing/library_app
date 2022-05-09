@@ -28,7 +28,6 @@ class BookDao {
     );
     print("saved");
     await getBookBox().putAll(bookMap);
-    print(getBookBox().values.toList());
   }
 
   void saveSingleBook(BookVO? book) async {

@@ -20,9 +20,7 @@ class BookDaoForCarousel {
 
   List<BookVO> getAllBooks() {
     List<BookVO> bookList = getBookBox().values.toList();
-    print("Before sort: $bookList");
     bookList.sort((b, a) => (a.timestamp ?? 0).compareTo((b.timestamp ?? 0)));
-    print("All Books for carousel: $bookList");
     return bookList;
   }
 

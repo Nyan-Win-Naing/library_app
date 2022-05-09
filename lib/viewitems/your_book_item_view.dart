@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/show_book_bottom_sheet.dart';
 
 class YourBookItemView extends StatelessWidget {
-
   final Function onTap;
+  final BookVO? book;
 
-  YourBookItemView({required this.onTap});
+  YourBookItemView({required this.onTap, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,10 @@ class YourBookItemView extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.black12,
                         borderRadius: BorderRadius.circular(MARGIN_SMALL),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                           image: NetworkImage(
-                            "https://images-na.ssl-images-amazon.com/images/I/412llgHC2TL._SX329_BO1,204,203,200_.jpg",
+                            book?.bookImage ??
+                                "https://www.richardsalter.com/wp-content/uploads/2011/07/Cover-not-available.jpg",
                           ),
                           fit: BoxFit.fill,
                         ),
@@ -49,14 +51,14 @@ class YourBookItemView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "The Making of a Manager",
+                            book?.title ?? "",
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           SizedBox(height: MARGIN_SMALL + 3),
                           Text(
-                            "Julie Zhou",
+                            book?.author ?? "",
                             style: TextStyle(
                               color: Color.fromRGBO(123, 128, 131, 1.0),
                               fontSize: MARGIN_CARD_MEDIUM_2,

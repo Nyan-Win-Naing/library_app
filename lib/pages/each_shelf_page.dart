@@ -51,7 +51,7 @@ class EachShelfPage extends StatelessWidget {
                 )
               ],
               onSelected: (index) {
-                if(index == 2) {
+                if (index == 2) {
                   Navigator.pop(context);
                 }
               },
@@ -79,7 +79,10 @@ class EachShelfPage extends StatelessWidget {
               ),
               const SizedBox(height: MARGIN_MEDIUM),
               ChipsAndBookListView(
-                  chipNames: chipNames, runtimeType: runtimeType),
+                chipNames: chipNames,
+                runtimeType: runtimeType,
+                books: [],
+              ),
             ],
           ),
         ),
