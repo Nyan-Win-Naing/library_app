@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/blocs/chips_and_book_list_bloc.dart';
 import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/data/vos/chip_vo.dart';
 import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
@@ -35,8 +36,13 @@ class ChipsAndBookListView extends StatelessWidget {
       create: (context) => ChipsAndBookListBloc(),
       child: Column(
         children: [
-          CategoryChipsSectionView(
-              chipNames: chipNames, runtimeType: runtimeType),
+          Selector<ChipsAndBookListBloc, List<ChipVO>>(
+            selector: (context, bloc) => bloc.chips ?? [],
+            shouldRebuild: (previous, next) => previous != next,
+            builder: (context, chips, child) =>
+                CategoryChipsSectionView(
+                    chipList: chips, runtimeType: runtimeType),
+          ),
           const SizedBox(height: MARGIN_MEDIUM_3),
           Padding(
             padding: const EdgeInsets.only(left: 0),

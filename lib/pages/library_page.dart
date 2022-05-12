@@ -14,6 +14,7 @@ import 'package:library_app/viewitems/shelf_item.dart';
 import 'package:library_app/viewitems/text_chip_view.dart';
 import 'package:library_app/viewitems/your_book_item_view.dart';
 import 'package:library_app/widgets/chips_and_book_list_view.dart';
+import 'package:library_app/widgets/your_shelves_view.dart';
 import 'package:provider/provider.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -94,101 +95,11 @@ class _LibraryPageState extends State<LibraryPage> {
                         books: books,
                       ),
                     )
-                  : Container(
-                      height: MediaQuery.of(context).size.height * 2.2 / 3,
-                      child: Stack(
-                        children: const [
-                          YourShelvesListSectionView(),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: CreateShelfButtonSectionView(),
-                          ),
-                        ],
-                      ),
-                    ),
+                  : YourShelvesView(),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class CreateShelfButtonSectionView extends StatelessWidget {
-  const CreateShelfButtonSectionView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: MARGIN_XLARGE),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddShelfPage(),
-            ),
-          );
-        },
-        child: Container(
-          width: 130,
-          height: 45,
-          decoration: BoxDecoration(
-            color: TAB_BAR_SELECTED_COLOR,
-            borderRadius: BorderRadius.circular(MARGIN_LARGE),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.2),
-                spreadRadius: 2,
-                blurRadius: 4,
-                offset: Offset(0, 5),
-              )
-            ],
-          ),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(
-                  Icons.create_outlined,
-                  color: PRIMARY_COLOR,
-                  size: MARGIN_MEDIUM_3,
-                ),
-                SizedBox(width: MARGIN_MEDIUM),
-                Text(
-                  YOUR_SHELVES_CREATE_NEW_BUTTON_TEXT,
-                  style: TextStyle(
-                    color: PRIMARY_COLOR,
-                    fontSize: MARGIN_CARD_MEDIUM_2,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class YourShelvesListSectionView extends StatelessWidget {
-  const YourShelvesListSectionView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.only(top: MARGIN_MEDIUM_3),
-      itemCount: 2,
-      // shrinkWrap: true,
-      // physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return ShelfItem();
-      },
     );
   }
 }

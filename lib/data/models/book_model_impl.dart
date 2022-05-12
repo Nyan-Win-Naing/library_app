@@ -3,11 +3,13 @@ import 'package:library_app/data/models/book_model.dart';
 import 'package:library_app/data/vos/book_list_for_hive_vo.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/horizontal_book_list_item_vo.dart';
+import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/network/dataagents/book_data_agent.dart';
 import 'package:library_app/network/dataagents/retrofit_data_agent_impl.dart';
 import 'package:library_app/persistence/daos/book_dao.dart';
 import 'package:library_app/persistence/daos/book_dao_for_carousel.dart';
 import 'package:library_app/persistence/daos/book_dao_for_search_result.dart';
+import 'package:library_app/persistence/daos/shelf_dao.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 class BookModelImpl extends BookModel {
@@ -23,6 +25,7 @@ class BookModelImpl extends BookModel {
   BookDao mBookDao = BookDao();
   BookDaoForCarousel mBookDaoForCarousel = BookDaoForCarousel();
   BookDaoForSearchResult mBookDaoForSearchResult = BookDaoForSearchResult();
+  ShelfDao mShelfDao = ShelfDao();
 
   /// Data Agent
   BookDataAgent mDataAgent = RetrofitDataAgentImpl();
@@ -84,6 +87,12 @@ class BookModelImpl extends BookModel {
     });
   }
 
+  @override
+  void saveShelfToShelfBox(ShelfVO shelf) {
+    mShelfDao.saveSingleShelf(shelf);
+    print("Shelf is saved......");
+  }
+
   /// Database
   @override
   Stream<BookVO?> getBookDetailFromDatabase(String title) {
@@ -124,5 +133,13 @@ class BookModelImpl extends BookModel {
             mBookDaoForSearchResult.getBooksBySearchedWordStream(searchedWord))
         .map((event) => mBookDaoForSearchResult
             .getBooksBySearchedWordForReactive(searchedWord));
+  }
+
+  @override
+  Stream<List<ShelfVO>> getShelvesFromDatabase() {
+    return mShelfDao
+        .getAllShelvesEventStream()
+        .startWith(mShelfDao.getAllShelvesStream())
+        .map((event) => mShelfDao.getAllShelvesForReactive());
   }
 }

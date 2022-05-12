@@ -90,7 +90,7 @@ class YourBookItemView extends StatelessWidget {
                 SizedBox(width: MARGIN_MEDIUM_3),
                 GestureDetector(
                   onTap: () {
-                    showBookBottomSheet(context, isHomePage: false);
+                    showBookBottomSheet(context, book, isHomePage: false);
                   },
                   child: Icon(
                     Icons.more_horiz,

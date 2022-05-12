@@ -63,7 +63,7 @@ class BookView extends StatelessWidget {
                           top: MARGIN_MEDIUM, right: MARGIN_MEDIUM),
                       child: GestureDetector(
                         onTap: () {
-                          showBookBottomSheet(context, isHomePage: isHomePage);
+                          showBookBottomSheet(context, book, isHomePage: isHomePage);
                         },
                         child: Icon(
                           Icons.more_horiz_rounded,

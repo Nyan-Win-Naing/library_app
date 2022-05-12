@@ -285,7 +285,7 @@ class HomeCarouselSectionView extends StatelessWidget {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            showBookBottomSheet(context);
+                            showBookBottomSheet(context, book);
                           },
                           child: const Icon(
                             Icons.more_horiz_rounded,

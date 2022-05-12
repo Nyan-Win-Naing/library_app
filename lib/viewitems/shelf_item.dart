@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/pages/each_shelf_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
 class ShelfItem extends StatelessWidget {
+  final ShelfVO? shelf;
+
+  ShelfItem({required this.shelf});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,7 +40,9 @@ class ShelfItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(MARGIN_SMALL),
                           image: DecorationImage(
                             image: NetworkImage(
-                              "https://images-na.ssl-images-amazon.com/images/I/410RTQezHYL._SX326_BO1,204,203,200_.jpg",
+                              ((shelf?.books?.isNotEmpty ?? false)) ? shelf?.books?.first.bookImage ??
+                                  "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg" :
+                              "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg",
                             ),
                             fit: BoxFit.fill,
                           ),
@@ -53,18 +60,18 @@ class ShelfItem extends StatelessWidget {
                         // color: Colors.blue,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              "10 Interaction Design Books to Read",
-                              style: TextStyle(
+                              shelf?.shelfName ?? "",
+                              style: const TextStyle(
                                 fontSize: MARGIN_MEDIUM_2 - 1,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: MARGIN_MEDIUM),
+                            const SizedBox(height: MARGIN_MEDIUM),
                             Text(
-                              "3 books",
-                              style: TextStyle(
+                              "${shelf?.books?.length} books",
+                              style: const TextStyle(
                                 color: Color.fromRGBO(113, 118, 121, 1.0),
                                 fontSize: MARGIN_CARD_MEDIUM_2,
                               ),

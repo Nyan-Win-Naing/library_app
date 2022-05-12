@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
-void showBookBottomSheet(BuildContext context, {isHomePage = true}) {
+void showBookBottomSheet(BuildContext context, BookVO? bookVo, {isHomePage = true}) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -26,35 +27,38 @@ void showBookBottomSheet(BuildContext context, {isHomePage = true}) {
                   decoration: BoxDecoration(
                     color: Colors.black12,
                     borderRadius: BorderRadius.circular(MARGIN_SMALL),
-                    image: const DecorationImage(
+                    image: DecorationImage(
                       image: NetworkImage(
-                        "https://images-na.ssl-images-amazon.com/images/I/51P8miZZ6OL._SX316_BO1,204,203,200_.jpg",
+                        bookVo?.bookImage ??
+                            "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg",
                       ),
                       fit: BoxFit.fill,
                     ),
                   ),
                 ),
                 SizedBox(width: MARGIN_MEDIUM_3),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "A Brief History Of Time",
-                      style: TextStyle(
-                        fontSize: MARGIN_MEDIUM_2 + 2,
-                        fontWeight: FontWeight.w500,
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bookVo?.title ?? "",
+                        style: const TextStyle(
+                          fontSize: MARGIN_MEDIUM_2 + 2,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: MARGIN_SMALL,
-                    ),
-                    Text(
-                      "Stephen Hawking . eBook",
-                      style: TextStyle(
-                        color: Color.fromRGBO(97, 101, 104, 1.0),
+                      const SizedBox(
+                        height: MARGIN_SMALL,
                       ),
-                    ),
-                  ],
+                      Text(
+                        "${bookVo?.author} . eBook",
+                        style: const TextStyle(
+                          color: Color.fromRGBO(97, 101, 104, 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -5,6 +5,8 @@ import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/buy_link_vo.dart';
 import 'package:library_app/data/vos/get_overview_result_vo.dart';
 import 'package:library_app/data/vos/horizontal_book_list_item_vo.dart';
+import 'package:library_app/data/vos/shelf_vo.dart';
+import 'package:library_app/pages/add_to_shelves_page.dart';
 import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/pages/each_shelf_page.dart';
 import 'package:library_app/pages/library_app.dart';
@@ -19,10 +21,12 @@ void main() async {
   Hive.registerAdapter(GetOverviewResultVOAdapter());
   Hive.registerAdapter(HorizontalBookListItemVOAdapter());
   Hive.registerAdapter(BookListForHiveVOAdapter());
+  Hive.registerAdapter(ShelfVOAdapter());
 
   await Hive.openBox<BookVO>(BOX_NAME_BOOK_VO);
   await Hive.openBox<BookVO>(BOX_NAME_BOOK_VO_FOR_CAROUSEL);
   await Hive.openBox<BookListForHiveVO>(BOX_NAME_BOOK_VO_FOR_SEARCH_RESULT);
+  await Hive.openBox<ShelfVO>(BOX_NAME_SHELF_VO);
 
   runApp(MyApp());
 }
@@ -37,7 +41,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LibraryApp(),
+      // home: LibraryApp(),
+      home: AddToShelvesPage(),
     );
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/models/book_model.dart';
+import 'package:library_app/data/models/book_model_impl.dart';
+import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/strings.dart';
@@ -13,6 +16,9 @@ class _AddShelfPageState extends State<AddShelfPage> {
   TextEditingController addShelfFieldController = TextEditingController();
 
   bool _validate = false;
+
+  /// Model
+  BookModel bookModel = BookModelImpl();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,8 @@ class _AddShelfPageState extends State<AddShelfPage> {
                 addShelfFieldController.text.isEmpty ? _validate = true : _validate = false;
               });
               if(_validate == false) {
+                ShelfVO shelf = ShelfVO(shelfName: addShelfFieldController.text, books: []);
+                bookModel.saveShelfToShelfBox(shelf);
                 Navigator.pop(context);
               }
             },
