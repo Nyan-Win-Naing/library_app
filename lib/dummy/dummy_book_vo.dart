@@ -3,12 +3,14 @@ class DummyBookVO {
   String author;
   String description;
   String imageUrl;
+  String category;
 
   DummyBookVO({
     required this.bookName,
     required this.author,
     required this.description,
     required this.imageUrl,
+    required this.category
   });
 
   @override

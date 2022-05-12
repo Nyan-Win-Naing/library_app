@@ -45,4 +45,10 @@ class HomeBloc extends ChangeNotifier {
       super.notifyListeners();
     }
   }
+
+  void getRelatedBooks(String title) {
+    bModel.getBookDetailFromDatabase(title).listen((bookDetail) {
+      bModel.getMoreBookListByCategoryFromDatabase(bookDetail?.category ?? "", "");
+    });
+  }
 }

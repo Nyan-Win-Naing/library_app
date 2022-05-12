@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:library_app/data/vos/book_list_for_hive_vo.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/buy_link_vo.dart';
 import 'package:library_app/data/vos/get_overview_result_vo.dart';
@@ -17,9 +18,11 @@ void main() async {
   Hive.registerAdapter(BuyLinkVOAdapter());
   Hive.registerAdapter(GetOverviewResultVOAdapter());
   Hive.registerAdapter(HorizontalBookListItemVOAdapter());
+  Hive.registerAdapter(BookListForHiveVOAdapter());
 
   await Hive.openBox<BookVO>(BOX_NAME_BOOK_VO);
   await Hive.openBox<BookVO>(BOX_NAME_BOOK_VO_FOR_CAROUSEL);
+  await Hive.openBox<BookListForHiveVO>(BOX_NAME_BOOK_VO_FOR_SEARCH_RESULT);
 
   runApp(MyApp());
 }

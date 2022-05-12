@@ -114,6 +114,9 @@ class BookVO {
   @HiveField(26)
   String? category;
 
+  @HiveField(27)
+  String? categoryEncoded;
+
   BookVO({
     this.ageGroup,
     this.amazonProductUrl,

@@ -54,7 +54,7 @@ class MoreBookPage extends StatelessWidget {
                   ShowIn2xGridView(
                     bookList: books,
                     onTap: (title) {
-                      _navigateToBookDetailPage(context, title);
+                      _navigateToBookDetailPage(context, title, books);
                     },
                     isHomePage: true,
                   ),
@@ -65,11 +65,11 @@ class MoreBookPage extends StatelessWidget {
     );
   }
 
-  void _navigateToBookDetailPage(BuildContext context, String title) {
+  void _navigateToBookDetailPage(BuildContext context, String title, List<BookVO> bookList) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BookDetailPage(title: title,),
+        builder: (context) => BookDetailPage(title: title, bookList: bookList,),
       ),
     );
   }

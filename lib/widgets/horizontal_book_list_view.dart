@@ -7,13 +7,14 @@ import 'package:library_app/viewitems/book_view.dart';
 class HorizontalBookListView extends StatelessWidget {
   final List<BookVO>? hBooks;
   final Function(String) onTap;
+  final bool isHomePage;
 
-  HorizontalBookListView({required this.onTap, required this.hBooks});
+  HorizontalBookListView({required this.onTap, required this.hBooks, this.isHomePage = true});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 290,
+      height: (isHomePage) ? 290 : 330,
       // color: Colors.black26,
       child: ListView.builder(
         padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),

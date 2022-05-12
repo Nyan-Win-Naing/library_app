@@ -29,6 +29,7 @@ class _LibraryAppState extends State<LibraryApp> {
     final avatarRadius = screenHeight / 45;
     print("Bottom nav index is: $bottomNavIndex");
     return Scaffold(
+      backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
         child: AppBar(

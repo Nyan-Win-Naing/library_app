@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/dummy/dummy_book_vo.dart';
 import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
 class SuggestionBookItemView extends StatelessWidget {
-  final DummyBookVO bookVo;
+  final BookVO bookVo;
+  final List<BookVO> bookList;
 
-  SuggestionBookItemView({required this.bookVo});
+  SuggestionBookItemView({required this.bookVo, required this.bookList});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class SuggestionBookItemView extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BookDetailPage(title: "",),
+            builder: (context) => BookDetailPage(title: bookVo.title ?? "", bookList: bookList,),
           ),
         );
       },
@@ -27,7 +29,8 @@ class SuggestionBookItemView extends StatelessWidget {
         child: Row(
           children: [
             Image.network(
-              bookVo.imageUrl,
+              bookVo.bookImage ??
+              "https://www.richardsalter.com/wp-content/uploads/2011/07/Cover-not-available.jpg",
               width: 50,
               height: 70,
               fit: BoxFit.fill,
@@ -39,8 +42,8 @@ class SuggestionBookItemView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bookVo.bookName,
-                    style: TextStyle(
+                    bookVo.title ?? "",
+                    style: const TextStyle(
                       color: Color.fromRGBO(94, 98, 102, 1.0),
                       fontSize: MARGIN_MEDIUM_2,
                       fontWeight: FontWeight.w500,
@@ -48,7 +51,7 @@ class SuggestionBookItemView extends StatelessWidget {
                   ),
                   SizedBox(height: MARGIN_MEDIUM),
                   Text(
-                    "${bookVo.author} . ${bookVo.description}",
+                    "${bookVo.author} . eBook in your library",
                     style: TextStyle(
                       color: BOOK_DETAILS_TEXT_LIGHT_COLOR,
                       fontSize: MARGIN_CARD_MEDIUM_2,

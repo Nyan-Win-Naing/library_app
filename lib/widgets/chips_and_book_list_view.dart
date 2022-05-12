@@ -131,18 +131,18 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                     Builder(builder: (context) {
                       if (changeToView == Icons.grid_view) {
                         return ShowInVerticalListView(
-                          onTap: () => _navigateToBookDetailPage(context),
+                          onTap: () => _navigateToBookDetailPage(context, books),
                           books: books,
                         );
                       } else if (changeToView == Icons.grid_on) {
                         return ShowIn2xGridView(
-                          onTap: (title) => _navigateToBookDetailPage(context),
+                          onTap: (title) => _navigateToBookDetailPage(context, books),
                           bookList: books,
                         );
                       } else {
                         return ShowIn3xGridView(
                           onTap: (title) {
-                            _navigateToBookDetailPage(context);
+                            _navigateToBookDetailPage(context, books);
                           },
                           books: books,
                         );
@@ -154,12 +154,13 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
     );
   }
 
-  void _navigateToBookDetailPage(BuildContext context) {
+  void _navigateToBookDetailPage(BuildContext context, List<BookVO> bookList) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => BookDetailPage(
           title: "",
+          bookList: bookList,
         ),
       ),
     );

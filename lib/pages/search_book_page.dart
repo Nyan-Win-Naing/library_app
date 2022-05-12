@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/blocs/search_book_bloc.dart';
+import 'package:library_app/data/models/book_model.dart';
+import 'package:library_app/data/models/book_model_impl.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/dummy/dummy_book_list.dart';
 import 'package:library_app/dummy/dummy_book_vo.dart';
 import 'package:library_app/pages/search_books_result_page.dart';
@@ -7,14 +11,9 @@ import 'package:library_app/resources/debouncer.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/strings.dart';
 import 'package:library_app/viewitems/suggestion_book_item_view.dart';
+import 'package:provider/provider.dart';
 
-class SearchBookPage extends StatefulWidget {
-  @override
-  State<SearchBookPage> createState() => _SearchBookPageState();
-}
-
-class _SearchBookPageState extends State<SearchBookPage> {
-  final debouncer = Debouncer(milliseconds: 0);
+class SearchBookPage extends StatelessWidget {
   String input = "";
 
   List<DummyBookVO> suggestionBooksList = [];
@@ -23,94 +22,93 @@ class _SearchBookPageState extends State<SearchBookPage> {
   Widget build(BuildContext context) {
     // suggestionBooksList = [];
     print("Suggestion Book List: $suggestionBooksList");
-    return Scaffold(
-      backgroundColor: PRIMARY_COLOR,
-      appBar: AppBar(
+    return ChangeNotifierProvider(
+      create: (context) => SearchBookBloc(),
+      child: Scaffold(
         backgroundColor: PRIMARY_COLOR,
-        elevation: 0.5,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: MARGIN_MEDIUM_3),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
-            ),
-          ),
-        ),
-        title: TextField(
-          onChanged: (text) {
-            onTextChange(text);
-            setState(() {
-              input = text;
-            });
-          },
-          autofocus: true,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (value) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchBooksResultPage(
-                  suggestionBooksList: suggestionBooksList,
-                  searchedWord: value,
-                ),
+        appBar: AppBar(
+          backgroundColor: PRIMARY_COLOR,
+          elevation: 0.5,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: MARGIN_MEDIUM_3),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_back,
+                color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
               ),
-            );
-          },
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: MAIN_SCREEN_APP_BAR_TEXT,
-            hintStyle: TextStyle(
-              color: MAIN_SCREEN_APP_BAR_TEXT_COLOR,
-              fontSize: 15,
             ),
           ),
+          title: Selector<SearchBookBloc, List<BookVO>>(
+            selector: (context, bloc) => bloc.searchResults ?? [],
+            builder: (context, searchedResults, child) =>
+                Builder(
+                    builder: (context) {
+                      SearchBookBloc bloc = Provider.of<SearchBookBloc>(context, listen: false);
+                      return TextField(
+                        onChanged: (text) {
+                          // onTextChange(text);
+                          // setState(() {
+                          //   input = text;
+                          // });
+                          bloc.onTextChange(text);
+                        },
+                        autofocus: true,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (value) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchBooksResultPage(
+                                suggestionBooksList: searchedResults,
+                                searchedWord: value,
+                              ),
+                            ),
+                          );
+                        },
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: MAIN_SCREEN_APP_BAR_TEXT,
+                          hintStyle: TextStyle(
+                            color: MAIN_SCREEN_APP_BAR_TEXT_COLOR,
+                            fontSize: 15,
+                          ),
+                        ),
+                      );
+                    }
+                ),
+          ),
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
+              child: Icon(
+                Icons.mic_outlined,
+                color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
+              ),
+            )
+          ],
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: MARGIN_MEDIUM_3),
-            child: Icon(
-              Icons.mic_outlined,
-              color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
+        body: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Selector<SearchBookBloc, List<BookVO>>(
+                  selector: (context, bloc) => bloc.searchResults ?? [],
+                  builder: (context, searchedResults, child) =>
+                      BookSearchAndSuggestionPage(
+                          suggestionBooksList: searchedResults),
+                ),
+              ],
             ),
-          )
-        ],
-      ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              BookSearchAndSuggestionPage(
-                  suggestionBooksList: suggestionBooksList),
-            ],
           ),
         ),
       ),
     );
   }
-
-  onTextChange(String searchWord) {
-    debouncer.run(() {
-      if (searchWord != "") {
-        dummyBookList.forEach((book) {
-          String lowerName = book.bookName.toLowerCase();
-          if (lowerName.contains(searchWord)) {
-            print(lowerName);
-            if (!suggestionBooksList.contains(book)) {
-              suggestionBooksList.add(book);
-            }
-          }
-        });
-      } else {
-        print("Search word is empty");
-        suggestionBooksList = [];
-      }
-    });
-  }
 }
+
 
 class BookSearchAndSuggestionPage extends StatelessWidget {
   const BookSearchAndSuggestionPage({
@@ -118,7 +116,7 @@ class BookSearchAndSuggestionPage extends StatelessWidget {
     required this.suggestionBooksList,
   }) : super(key: key);
 
-  final List<DummyBookVO> suggestionBooksList;
+  final List<BookVO> suggestionBooksList;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +134,7 @@ class BookSearchAndSuggestionPage extends StatelessWidget {
 }
 
 class SuggestionBookList extends StatelessWidget {
-  final List<DummyBookVO> suggestionBookList;
+  final List<BookVO> suggestionBookList;
 
   SuggestionBookList({required this.suggestionBookList});
 
@@ -152,6 +150,7 @@ class SuggestionBookList extends StatelessWidget {
           itemBuilder: (context, index) {
             return SuggestionBookItemView(
               bookVo: suggestionBookList[index],
+              bookList: suggestionBookList,
             );
           },
         ),

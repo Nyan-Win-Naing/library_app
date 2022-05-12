@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 class BookDetailPage extends StatelessWidget {
   final String title;
+  final List<BookVO> bookList;
 
-  BookDetailPage({required this.title});
+  BookDetailPage({required this.title, required this.bookList});
 
   @override
   Widget build(BuildContext context) {
@@ -62,93 +63,91 @@ class BookDetailPage extends StatelessWidget {
         body: Container(
           child: Selector<BookDetailBloc, BookVO?>(
             selector: (context, bloc) => bloc.book,
-            builder: (context, book, child) =>
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: MARGIN_MEDIUM_3,
-                          vertical: MARGIN_XLARGE,
-                        ),
-                        child: BookCoverNameAndAuthorSectionView(book: book),
+            builder: (context, book, child) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: MARGIN_MEDIUM_3,
+                        vertical: MARGIN_XLARGE,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                        child: BookRatingAndTypeSectionView(),
+                      child: BookCoverNameAndAuthorSectionView(book: book),
+                    ),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+                      child: BookRatingAndTypeSectionView(),
+                    ),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: MARGIN_MEDIUM_3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          BookDetailButtonView(
+                              isBuy: false, buttonText: "Free sample"),
+                          BookDetailButtonView(
+                              isBuy: true, buttonText: "Buy SGD 15.30"),
+                        ],
                       ),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            BookDetailButtonView(
-                                isBuy: false, buttonText: "Free sample"),
-                            BookDetailButtonView(
-                                isBuy: true, buttonText: "Buy SGD 15.30"),
-                          ],
-                        ),
+                    ),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    const Text(
+                      DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT,
+                      style: TextStyle(
+                        color: DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT_COLOR,
+                        fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      const Text(
-                        DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT,
-                        style: TextStyle(
-                          color: DETAIL_PAGE_SWITCH_TO_AUDIO_BOOK_TEXT_COLOR,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                        height: 1,
-                        color: HORIZONTAL_DIVIDER_LINE_LIGHT_COLOR,
-                      ),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      AboutEbookOrAuthorSectionView(
-                        title: "About this eBook",
-                        about: book?.description ?? "",
-                      ),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      const RatingAndReviewSectionView(),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      AboutEbookOrAuthorSectionView(
-                        title: "About the author",
-                        about:
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
-                      ),
-                      const SizedBox(height: MARGIN_XLARGE),
-                      BookDetailHorizontalBookListView(
-                        title: "Similar ebooks",
-                        onTap: () {
-                          _navigateToBookDetailPage(context);
-                        },
-                      ),
-                      const SizedBox(height: MARGIN_MEDIUM_3),
-                      BookDetailHorizontalBookListView(
-                        title: "More by Stephen Hawking",
-                        onTap: () {
-                          _navigateToBookDetailPage(context);
-                        },
-                      ),
-                      const SizedBox(height: MARGIN_MEDIUM_3),
-                      const RateThisEbookSectionView(),
-                      const SizedBox(height: MARGIN_MEDIUM_3),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: MARGIN_MEDIUM_3),
+                      height: 1,
+                      color: HORIZONTAL_DIVIDER_LINE_LIGHT_COLOR,
+                    ),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    AboutEbookOrAuthorSectionView(
+                      title: "About this eBook",
+                      about: book?.description ?? "",
+                    ),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    const RatingAndReviewSectionView(),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    AboutEbookOrAuthorSectionView(
+                      title: "About the author",
+                      about:
+                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
+                    ),
+                    const SizedBox(height: MARGIN_XLARGE),
+                    BookDetailHorizontalBookListView(
+                      title: "Similar ebooks",
+                      onTap: (title) {
+                        _navigateToBookDetailPage(context, title, this.bookList);
+                      },
+                      bookList: bookList,
+                    ),
+                    const SizedBox(height: MARGIN_MEDIUM_3),
+                    const SizedBox(height: MARGIN_MEDIUM_3),
+                    const RateThisEbookSectionView(),
+                    const SizedBox(height: MARGIN_MEDIUM_3),
+                  ],
                 ),
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  void _navigateToBookDetailPage(BuildContext context) {
+  void _navigateToBookDetailPage(BuildContext context, String title, List<BookVO> bookList) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BookDetailPage(title: ""),
+        builder: (context) => BookDetailPage(title: title, bookList: bookList,),
       ),
     );
   }
@@ -207,9 +206,11 @@ class RateThisEbookSectionView extends StatelessWidget {
 
 class BookDetailHorizontalBookListView extends StatelessWidget {
   final String title;
-  final Function onTap;
+  final Function(String) onTap;
+  final List<BookVO> bookList;
 
-  BookDetailHorizontalBookListView({required this.title, required this.onTap});
+  BookDetailHorizontalBookListView(
+      {required this.title, required this.onTap, required this.bookList});
 
   @override
   Widget build(BuildContext context) {
@@ -221,9 +222,9 @@ class BookDetailHorizontalBookListView extends StatelessWidget {
         ),
         const SizedBox(height: MARGIN_MEDIUM_2),
         HorizontalBookListView(
-          hBooks: [],
+          hBooks: bookList,
           onTap: (title) {
-            onTap();
+            onTap(title);
           },
         ),
       ],

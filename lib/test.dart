@@ -1,7 +1,8 @@
-void main() {
+import "package:collection/collection.dart";
+import 'package:library_app/dummy/dummy_book_list.dart';
+import 'package:library_app/dummy/dummy_book_vo.dart';
 
-  print(DateTime.now().millisecondsSinceEpoch);
-  List<int> numList = [5, 7, 6, 4, 2, 1];
-  numList.sort((b, a) => a.compareTo(b));
-  print(numList);
+void main() {
+  var data = groupBy(dummyBookList, (DummyBookVO bookVo) => bookVo.category);
+  print(data["abc"]);
 }

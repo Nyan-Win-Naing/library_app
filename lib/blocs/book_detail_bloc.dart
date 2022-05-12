@@ -6,6 +6,7 @@ import 'package:library_app/data/vos/book_vo.dart';
 class BookDetailBloc extends ChangeNotifier {
   /// States
   BookVO? book;
+  List<BookVO>? bookList;
 
   /// Models
   BookModel bookModel = BookModelImpl();

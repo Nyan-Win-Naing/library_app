@@ -127,31 +127,32 @@ class _BooksListSectionViewState extends State<BooksListSectionView> {
             ? BooksByCategoryView(
                 hBookLists: widget.hBookLists,
                 horizontalEbookListTitles: horizontalEbookListTitles,
-                onTap: (title) {
-                  _navigateToBookDetailPage(context, title);
-                },
+                // onTap: (title) {
+                //   _navigateToBookDetailPage(context, title);
+                // },
               )
             : BooksByCategoryView(
                 hBookLists: widget.hBookLists,
                 horizontalEbookListTitles: horizontalAudioBookListTitles,
-                onTap: (title) {
-                  _navigateToBookDetailPage(context, title);
-                },
+                // onTap: (title) {
+                //   _navigateToBookDetailPage(context, title);
+                // },
               ),
       ],
     );
   }
 
-  void _navigateToBookDetailPage(BuildContext context, String title) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BookDetailPage(
-          title: title,
-        ),
-      ),
-    );
-  }
+  // void _navigateToBookDetailPage(BuildContext context, String title, List<BookVO> bookList) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => BookDetailPage(
+  //         title: title,
+  //         bookList: bookList,
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class BooksByCategoryView extends StatelessWidget {
@@ -159,16 +160,16 @@ class BooksByCategoryView extends StatelessWidget {
     Key? key,
     required this.horizontalEbookListTitles,
     required this.hBookLists,
-    required this.onTap,
+    // required this.onTap,
   }) : super(key: key);
 
   final List<String> horizontalEbookListTitles;
   final List<HorizontalBookListItemVO>? hBookLists;
-  final Function(String) onTap;
+  // final Function(String) onTap;
 
   @override
   Widget build(BuildContext context) {
-    return (hBookLists != null)
+    return (hBookLists != null || (hBookLists?.isNotEmpty ?? false))
         ? Container(
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
@@ -190,7 +191,7 @@ class BooksByCategoryView extends StatelessWidget {
                     HorizontalBookListView(
                       hBooks: hBookLists?[index].books ?? [],
                       onTap: (title) {
-                        onTap(title);
+                        _navigateToBookDetailPage(context, title, hBookLists?[index].books ?? []);
                       },
                     ),
                     const SizedBox(height: MARGIN_MEDIUM),
@@ -210,6 +211,18 @@ class BooksByCategoryView extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => MoreBookPage(hBookListItem: hBookListItem),
+      ),
+    );
+  }
+
+  void _navigateToBookDetailPage(BuildContext context, String title, List<BookVO> bookList) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetailPage(
+          title: title,
+          bookList: bookList,
+        ),
       ),
     );
   }

@@ -16,7 +16,7 @@ class BookSearchResultItemView extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BookDetailPage(title: "",),
+            builder: (context) => BookDetailPage(title: "", bookList: [],),
           ),
         );
       },
