@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/blocs/add_to_shelves_bloc.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/pages/each_shelf_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
+import 'package:provider/provider.dart';
 
-class ShelfItem extends StatelessWidget {
+class ShelfItem extends StatefulWidget {
   final ShelfVO? shelf;
+  bool? isAddToShelvesPage;
 
-  ShelfItem({required this.shelf});
+  ShelfItem({required this.shelf, this.isAddToShelvesPage = false});
+
+  @override
+  State<ShelfItem> createState() => _ShelfItemState();
+}
+
+class _ShelfItemState extends State<ShelfItem> {
 
   @override
   Widget build(BuildContext context) {
+
+    widget.shelf?.books?.sort((b, a) => (a.timestamp ?? 0).compareTo(b.timestamp ?? 0));
+
     return Padding(
       padding: const EdgeInsets.only(bottom: MARGIN_LARGE),
       child: Column(
@@ -20,14 +32,21 @@ class ShelfItem extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EachShelfPage(),
+                  builder: (context) => EachShelfPage(shelf: widget.shelf),
                 ),
               );
             },
             child: Container(
               height: 90,
               // color: Colors.black26,
-              padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+              padding: EdgeInsets.only(
+                left: (!(widget.isAddToShelvesPage ?? false))
+                    ? MARGIN_MEDIUM_3
+                    : MARGIN_MEDIUM_2,
+                right: (!(widget.isAddToShelvesPage ?? false))
+                    ? MARGIN_MEDIUM_3
+                    : 0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -40,9 +59,10 @@ class ShelfItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(MARGIN_SMALL),
                           image: DecorationImage(
                             image: NetworkImage(
-                              ((shelf?.books?.isNotEmpty ?? false)) ? shelf?.books?.first.bookImage ??
-                                  "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg" :
-                              "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg",
+                              ((widget.shelf?.books?.isNotEmpty ?? false))
+                                  ? widget.shelf?.books?.first.bookImage ??
+                                      "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg"
+                                  : "https://lightning.od-cdn.com/static/img/no-cover_en_US.a8920a302274ea37cfaecb7cf318890e.jpg",
                             ),
                             fit: BoxFit.fill,
                           ),
@@ -62,7 +82,7 @@ class ShelfItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              shelf?.shelfName ?? "",
+                              widget.shelf?.shelfName ?? "",
                               style: const TextStyle(
                                 fontSize: MARGIN_MEDIUM_2 - 1,
                                 fontWeight: FontWeight.w600,
@@ -70,7 +90,7 @@ class ShelfItem extends StatelessWidget {
                             ),
                             const SizedBox(height: MARGIN_MEDIUM),
                             Text(
-                              "${shelf?.books?.length} books",
+                              "${widget.shelf?.books?.length} books",
                               style: const TextStyle(
                                 color: Color.fromRGBO(113, 118, 121, 1.0),
                                 fontSize: MARGIN_CARD_MEDIUM_2,
@@ -81,11 +101,22 @@ class ShelfItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    color: SECONDARY_COLOR,
-                    size: MARGIN_MEDIUM_3,
-                  ),
+                  (widget.isAddToShelvesPage ?? false)
+                      ? Checkbox(
+                          checkColor: PRIMARY_COLOR,
+                          value: widget.shelf?.isSelected ?? false,
+                          materialTapTargetSize: MaterialTapTargetSize.padded,
+                          onChanged: (value) {
+                            AddToShelvesBloc bloc =
+                                Provider.of(context, listen: false);
+                            bloc.onCheck(value ?? false, widget.shelf);
+                          },
+                        )
+                      : const Icon(
+                          Icons.arrow_forward_ios,
+                          color: SECONDARY_COLOR,
+                          size: MARGIN_MEDIUM_3,
+                        ),
                 ],
               ),
             ),

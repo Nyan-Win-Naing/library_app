@@ -93,6 +93,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         chipNames: chipNames,
                         runtimeType: runtimeType,
                         books: books,
+                        isLibraryPage: true,
                       ),
                     )
                   : YourShelvesView(),

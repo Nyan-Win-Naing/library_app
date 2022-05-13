@@ -16,4 +16,5 @@ abstract class BookModel {
   Stream<List<BookVO>?> getMoreBookListByCategoryFromDatabase(String listName, String offset);
   Stream<List<BookVO>?> getSearchedBookResultsFromDatabase(String searchWord);
   Stream<List<ShelfVO>> getShelvesFromDatabase();
+  Stream<ShelfVO?> getSingleShelfFromDatabase(String id);
 }

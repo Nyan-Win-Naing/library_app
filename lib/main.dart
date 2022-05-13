@@ -41,8 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: LibraryApp(),
-      home: AddToShelvesPage(),
+      home: LibraryApp(),
     );
   }
 }

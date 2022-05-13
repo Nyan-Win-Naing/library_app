@@ -24,7 +24,7 @@ class ChipsAndBookListBloc extends ChangeNotifier {
 
   bool _disposed = false;
 
-  ChipsAndBookListBloc({bool isLibraryPage = true}) {
+  ChipsAndBookListBloc({bool isLibraryPage = true, List<BookVO>? bookList}) {
     /// Get Book List For Library Page From Database
     if (isLibraryPage == true) {
       bookModel.getBookListForCarouselFromDatabase().listen((books) {
@@ -38,6 +38,14 @@ class ChipsAndBookListBloc extends ChangeNotifier {
       }).onError((error) {
         debugPrint(error.toString());
       });
+    } else {
+      print("Book List is $bookList");
+      this.books = bookList;
+      radioVal = 2;
+      notifyListeners();
+      originalBookList = List.of(bookList ?? []);
+      onTapBottomSheetRadioButton(radioVal);
+      getCategoriesFromViewedBooks(books);
     }
 
     /// Set initial Change To Icon Data

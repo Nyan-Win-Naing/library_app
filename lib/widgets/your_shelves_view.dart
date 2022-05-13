@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:library_app/blocs/your_shelves_bloc.dart';
 import 'package:library_app/data/models/book_model.dart';
 import 'package:library_app/data/models/book_model_impl.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
@@ -9,50 +8,30 @@ import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 import 'package:library_app/resources/strings.dart';
 import 'package:library_app/viewitems/shelf_item.dart';
+import 'package:provider/provider.dart';
 
-class YourShelvesView extends StatefulWidget {
-  @override
-  State<YourShelvesView> createState() => _YourShelvesViewState();
-}
-
-class _YourShelvesViewState extends State<YourShelvesView> {
-  /// Models
-  BookModel bookModel = BookModelImpl();
-
-  /// State Variables
-  List<ShelfVO>? shelves;
-
-  @override
-  void initState() {
-
-    print("Your Shelves View initState method works........");
-
-    /// Get Shelves From Database
-    bookModel.getShelvesFromDatabase().listen((shelfList) {
-      setState(() {
-        shelves = shelfList;
-      });
-    }).onError((error) {
-      debugPrint(error.toString());
-    });
-
-    super.initState();
-  }
-
+class YourShelvesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 2.2 / 3,
-      child: Stack(
-        children: [
-          YourShelvesListSectionView(
-            shelves: shelves ?? [],
-          ),
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: CreateShelfButtonSectionView(),
-          ),
-        ],
+    return ChangeNotifierProvider(
+      create: (context) => YourShelvesBloc(),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 2.2 / 3,
+        child: Stack(
+          children: [
+            Selector<YourShelvesBloc, List<ShelfVO>>(
+              selector: (context, bloc) => bloc.shelves ?? [],
+              builder: (context, shelves, child) =>
+                  YourShelvesListSectionView(
+                    shelves: shelves,
+                  ),
+            ),
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: CreateShelfButtonSectionView(),
+            ),
+          ],
+        ),
       ),
     );
   }

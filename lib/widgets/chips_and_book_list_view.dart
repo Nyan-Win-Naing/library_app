@@ -16,10 +16,12 @@ import 'package:library_app/widgets/show_in_3x_grid_view.dart';
 import 'package:provider/provider.dart';
 
 class ChipsAndBookListView extends StatelessWidget {
-
-  ChipsAndBookListView({required this.chipNames,
-      required this.runtimeType,
-      required this.books}) {
+  ChipsAndBookListView({
+    required this.chipNames,
+    required this.runtimeType,
+    required this.books,
+    required this.isLibraryPage,
+  }) {
     this.chipNames = chipNames;
     this.runtimeType = runtimeType;
     this.books = books;
@@ -28,20 +30,20 @@ class ChipsAndBookListView extends StatelessWidget {
   List chipNames;
   Type runtimeType;
   List<BookVO> books;
+  bool isLibraryPage;
 
   @override
   Widget build(BuildContext context) {
     print("Print books before add to chips and book list bloc: $books.......");
     return ChangeNotifierProvider(
-      create: (context) => ChipsAndBookListBloc(),
+      create: (context) => ChipsAndBookListBloc(isLibraryPage: isLibraryPage, bookList: books,),
       child: Column(
         children: [
           Selector<ChipsAndBookListBloc, List<ChipVO>>(
             selector: (context, bloc) => bloc.chips ?? [],
             shouldRebuild: (previous, next) => previous != next,
-            builder: (context, chips, child) =>
-                CategoryChipsSectionView(
-                    chipList: chips, runtimeType: runtimeType),
+            builder: (context, chips, child) => CategoryChipsSectionView(
+                chipList: chips, runtimeType: runtimeType),
           ),
           const SizedBox(height: MARGIN_MEDIUM_3),
           Padding(
@@ -65,7 +67,6 @@ class YourBookListSectionView extends StatefulWidget {
 }
 
 class _YourBookListSectionViewState extends State<YourBookListSectionView> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -110,18 +111,18 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
               ),
               Selector<ChipsAndBookListBloc, IconData?>(
                 selector: (context, bloc) => bloc.changeToView,
-                builder: (context, changeToView, child) =>
-                    GestureDetector(
-                      onTap: () {
-                        ChipsAndBookListBloc bloc =
-                        Provider.of<ChipsAndBookListBloc>(context, listen: false);
-                        bloc.onTapChangeView(changeToView);
-                      },
-                      child: Icon(
-                        changeToView,
-                        color: SECONDARY_COLOR,
-                      ),
-                    ),
+                builder: (context, changeToView, child) => GestureDetector(
+                  onTap: () {
+                    ChipsAndBookListBloc bloc =
+                        Provider.of<ChipsAndBookListBloc>(context,
+                            listen: false);
+                    bloc.onTapChangeView(changeToView);
+                  },
+                  child: Icon(
+                    changeToView,
+                    color: SECONDARY_COLOR,
+                  ),
+                ),
               ),
             ],
           ),
@@ -132,29 +133,29 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
           shouldRebuild: (previous, next) => previous != next,
           builder: (context, books, child) =>
               Selector<ChipsAndBookListBloc, IconData?>(
-                selector: (context, bloc) => bloc.changeToView,
-                builder: (context, changeToView, Widget? child) =>
-                    Builder(builder: (context) {
-                      if (changeToView == Icons.grid_view) {
-                        return ShowInVerticalListView(
-                          onTap: () => _navigateToBookDetailPage(context, books),
-                          books: books,
-                        );
-                      } else if (changeToView == Icons.grid_on) {
-                        return ShowIn2xGridView(
-                          onTap: (title) => _navigateToBookDetailPage(context, books),
-                          bookList: books,
-                        );
-                      } else {
-                        return ShowIn3xGridView(
-                          onTap: (title) {
-                            _navigateToBookDetailPage(context, books);
-                          },
-                          books: books,
-                        );
-                      }
-                    }),
-              ),
+            selector: (context, bloc) => bloc.changeToView,
+            builder: (context, changeToView, Widget? child) =>
+                Builder(builder: (context) {
+              if (changeToView == Icons.grid_view) {
+                return ShowInVerticalListView(
+                  onTap: () => _navigateToBookDetailPage(context, books),
+                  books: books,
+                );
+              } else if (changeToView == Icons.grid_on) {
+                return ShowIn2xGridView(
+                  onTap: (title) => _navigateToBookDetailPage(context, books),
+                  bookList: books,
+                );
+              } else {
+                return ShowIn3xGridView(
+                  onTap: (title) {
+                    _navigateToBookDetailPage(context, books);
+                  },
+                  books: books,
+                );
+              }
+            }),
+          ),
         ),
       ],
     );
@@ -182,94 +183,90 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
         return StatefulBuilder(
           builder: (BuildContext bctxt, StateSetter stateSetter) {
             return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MARGIN_LARGE, vertical: MARGIN_LARGE),
-                    child: Text(
-                      BOTTOM_SHEET_SORT_BY_TITLE,
-                      style: TextStyle(
-                          fontSize: MARGIN_MEDIUM_3,
-                          fontWeight: FontWeight.w400),
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MARGIN_LARGE, vertical: MARGIN_LARGE),
+                  child: Text(
+                    BOTTOM_SHEET_SORT_BY_TITLE,
+                    style: TextStyle(
+                        fontSize: MARGIN_MEDIUM_3, fontWeight: FontWeight.w400),
+                  ),
+                ),
+                Container(
+                  height: 1,
+                  color: Color.fromRGBO(219, 220, 222, 1.0),
+                ),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Transform.translate(
+                        offset: Offset(-12, 0),
+                        child: const Text(
+                          SORT_BY_BUTTOM_SHEET_AUTHOR,
+                          style: TextStyle(
+                            fontSize: MARGIN_CARD_MEDIUM_2 + 2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      leading: Radio<int>(
+                        value: 1,
+                        groupValue: bloc.radioVal,
+                        onChanged: (value) {
+                          stateSetter(() {});
+                          bloc.onTapBottomSheetRadioButton(value);
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 1,
-                    color: Color.fromRGBO(219, 220, 222, 1.0),
-                  ),
-                  Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Transform.translate(
-                          offset: Offset(-12, 0),
-                          child: const Text(
-                            SORT_BY_BUTTOM_SHEET_AUTHOR,
-                            style: TextStyle(
-                              fontSize: MARGIN_CARD_MEDIUM_2 + 2,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    ListTile(
+                      title: Transform.translate(
+                        offset: Offset(-12, 0),
+                        child: const Text(
+                          SORT_BY_BUTTOM_SHEET_RECENT,
+                          style: TextStyle(
+                            fontSize: MARGIN_CARD_MEDIUM_2 + 2,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        leading: Radio<int>(
-                          value: 1,
-                          groupValue: bloc.radioVal,
-                          onChanged: (value) {
-                            stateSetter(() {});
-                            bloc.onTapBottomSheetRadioButton(value);
-                          },
-                        ),
                       ),
-                      ListTile(
-                        title: Transform.translate(
-                          offset: Offset(-12, 0),
-                          child: const Text(
-                            SORT_BY_BUTTOM_SHEET_RECENT,
-                            style: TextStyle(
-                              fontSize: MARGIN_CARD_MEDIUM_2 + 2,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      leading: Radio<int>(
+                        value: 2,
+                        groupValue: bloc.radioVal,
+                        onChanged: (value) {
+                          stateSetter(() {});
+                          bloc.onTapBottomSheetRadioButton(value);
+                        },
+                        activeColor: Colors.blue,
+                      ),
+                    ),
+                    ListTile(
+                      title: Transform.translate(
+                        offset: Offset(-12, 0),
+                        child: const Text(
+                          SORT_BY_BUTTOM_SHEET_TITLE,
+                          style: TextStyle(
+                            fontSize: MARGIN_CARD_MEDIUM_2 + 2,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        leading: Radio<int>(
-                          value: 2,
-                          groupValue: bloc.radioVal,
-                          onChanged: (value) {
-                            stateSetter(() {
-                            });
-                            bloc.onTapBottomSheetRadioButton(value);
-
-                          },
-                          activeColor: Colors.blue,
-                        ),
                       ),
-                      ListTile(
-                        title: Transform.translate(
-                          offset: Offset(-12, 0),
-                          child: const Text(
-                            SORT_BY_BUTTOM_SHEET_TITLE,
-                            style: TextStyle(
-                              fontSize: MARGIN_CARD_MEDIUM_2 + 2,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        leading: Radio<int>(
-                          value: 3,
-                          groupValue: bloc.radioVal,
-                          onChanged: (value) {
-                            stateSetter(() {
-                            });
-                            bloc.onTapBottomSheetRadioButton(value);
-                          },
-                          activeColor: Colors.blue,
-                        ),
+                      leading: Radio<int>(
+                        value: 3,
+                        groupValue: bloc.radioVal,
+                        onChanged: (value) {
+                          stateSetter(() {});
+                          bloc.onTapBottomSheetRadioButton(value);
+                        },
+                        activeColor: Colors.blue,
                       ),
-                    ],
-                  ),
-                ],
-              );
+                    ),
+                  ],
+                ),
+              ],
+            );
           },
         );
       },

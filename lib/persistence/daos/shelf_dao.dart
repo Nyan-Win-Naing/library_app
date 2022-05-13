@@ -14,12 +14,12 @@ class ShelfDao {
 
   void saveSingleShelf(ShelfVO? shelf) async {
     if(shelf != null) {
-      await getShelfBox().put(shelf.shelfName ?? "", shelf);
+      await getShelfBox().put(shelf.shelfId ?? "", shelf);
     }
   }
 
-  ShelfVO? getShelfByTitle(String name) {
-    return getShelfBox().get(name);
+  ShelfVO? getShelfById(String id) {
+    return getShelfBox().get(id);
   }
 
   List<ShelfVO> getAllShelves() {
@@ -35,17 +35,17 @@ class ShelfDao {
     return getShelfBox().watch();
   }
 
-  Stream<ShelfVO?> getShelfByTitleStream(String name) {
-    return Stream.value(getShelfByTitle(name));
+  Stream<ShelfVO?> getShelfByIdStream(String id) {
+    return Stream.value(getShelfById(id));
   }
 
   Stream<List<ShelfVO>> getAllShelvesStream() {
     return Stream.value(getAllShelves());
   }
 
-  ShelfVO? getShelfByTitleForReactive(String name) {
-    if(getShelfByTitle(name) != null) {
-      return getShelfByTitle(name);
+  ShelfVO? getShelfByIdForReactive(String id) {
+    if(getShelfById(id) != null) {
+      return getShelfById(id);
     } else {
       return ShelfVO();
     }

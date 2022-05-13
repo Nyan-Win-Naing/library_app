@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/pages/add_to_shelves_page.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/resources/colors.dart';
 import 'package:library_app/resources/dimens.dart';
 
-void showBookBottomSheet(BuildContext context, BookVO? bookVo, {isHomePage = true}) {
+void showBookBottomSheet(BuildContext context, BookVO? bookVo,
+    {isHomePage = true}) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -15,9 +17,7 @@ void showBookBottomSheet(BuildContext context, BookVO? bookVo, {isHomePage = tru
         children: [
           Padding(
             padding: const EdgeInsets.only(
-                top: MARGIN_MEDIUM_3,
-                left: MARGIN_LARGE,
-                right: MARGIN_LARGE),
+                top: MARGIN_MEDIUM_3, left: MARGIN_LARGE, right: MARGIN_LARGE),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,8 +70,8 @@ void showBookBottomSheet(BuildContext context, BookVO? bookVo, {isHomePage = tru
           ),
           SizedBox(height: MARGIN_CARD_MEDIUM_2),
           Padding(
-            padding: const EdgeInsets.only(
-                left: MARGIN_LARGE, right: MARGIN_LARGE),
+            padding:
+                const EdgeInsets.only(left: MARGIN_LARGE, right: MARGIN_LARGE),
             child: Column(
               children: [
                 ListTileForBottomSheet(
@@ -82,8 +82,18 @@ void showBookBottomSheet(BuildContext context, BookVO? bookVo, {isHomePage = tru
                 ListTileForBottomSheet(
                     iconData: Icons.delete_outline,
                     title: "Delete from library"),
-                ListTileForBottomSheet(
-                    iconData: Icons.add, title: "Add to shelf"),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddToShelvesPage(book: bookVo),
+                      ),
+                    );
+                  },
+                  child: ListTileForBottomSheet(
+                      iconData: Icons.add, title: "Add to shelf"),
+                ),
                 ListTileForBottomSheet(
                     iconData: Icons.book_outlined, title: "About this eBook"),
               ],
@@ -98,7 +108,7 @@ void showBookBottomSheet(BuildContext context, BookVO? bookVo, {isHomePage = tru
               width: double.infinity,
               child: FlatButton(
                 onPressed: () {},
-                color: Color.fromRGBO(0,121,202, 1.0),
+                color: Color.fromRGBO(0, 121, 202, 1.0),
                 height: 40,
                 child: Text(
                   "Buy SGD1",

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:library_app/data/models/book_model.dart';
 import 'package:library_app/data/vos/book_list_for_hive_vo.dart';
@@ -141,5 +143,13 @@ class BookModelImpl extends BookModel {
         .getAllShelvesEventStream()
         .startWith(mShelfDao.getAllShelvesStream())
         .map((event) => mShelfDao.getAllShelvesForReactive());
+  }
+
+  @override
+  Stream<ShelfVO?> getSingleShelfFromDatabase(String id) {
+    return mShelfDao
+        .getAllShelvesEventStream()
+        .startWith(mShelfDao.getShelfByIdStream(id))
+        .map((event) => mShelfDao.getShelfByIdForReactive(id));
   }
 }
