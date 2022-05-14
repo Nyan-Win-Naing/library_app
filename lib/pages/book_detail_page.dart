@@ -30,6 +30,7 @@ class BookDetailPage extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
+            key: Key("backBtnDetailPage"),
             child: const Icon(
               Icons.keyboard_arrow_left_sharp,
               color: SECONDARY_COLOR,

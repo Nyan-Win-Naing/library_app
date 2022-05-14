@@ -12,6 +12,7 @@ class ShowIn3xGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      key: Key("3xgridView"),
       padding: EdgeInsets.only(left: MARGIN_MEDIUM_3, right: 10),
       itemCount: books.length,
       physics: const NeverScrollableScrollPhysics(),

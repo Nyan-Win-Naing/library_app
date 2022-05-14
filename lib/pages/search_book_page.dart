@@ -38,6 +38,7 @@ class SearchBookPage extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_back,
                 color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
+                key: Key("searchBookPageBack"),
               ),
             ),
           ),
@@ -48,6 +49,7 @@ class SearchBookPage extends StatelessWidget {
                     builder: (context) {
                       SearchBookBloc bloc = Provider.of<SearchBookBloc>(context, listen: false);
                       return TextField(
+                        key: Key("searchField"),
                         onChanged: (text) {
                           // onTextChange(text);
                           // setState(() {

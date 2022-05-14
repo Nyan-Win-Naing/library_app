@@ -39,6 +39,7 @@ class CategoryChipsSectionView extends StatelessWidget {
 
                           bloc.onTapCloseButton();
                         },
+                        key: Key("chip${index}"),
                         child: IconChipView(
                             iconData: chipList[index].chipName,
                             isSearchBookResultPage: isSearchBookResultPage),
@@ -56,6 +57,7 @@ class CategoryChipsSectionView extends StatelessWidget {
                         //         listen: false);
                         bloc.onSelectChip(index);
                       },
+                      key: Key("chip${index}"),
                       child: TextChipView(
                         chip: chipList[index],
                         isSearchBookResultPage: isSearchBookResultPage,

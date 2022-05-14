@@ -46,11 +46,11 @@ class _LibraryAppState extends State<LibraryApp> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, key: Key("btmNav1"),),
             label: MAIN_SCREEN_BOTTOM_NAVIGATION_HOME,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
+            icon: Icon(Icons.library_books_outlined, key: Key("btmNav2"),),
             label: MAIN_SCREEN_BOTTOM_NAVIGATION_LIBRARY,
           ),
         ],

@@ -14,6 +14,7 @@ class ShowIn2xGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      key: Key("2xgridView"),
       padding: EdgeInsets.only(left: MARGIN_MEDIUM_3),
       itemCount: bookList.length,
       physics: const NeverScrollableScrollPhysics(),

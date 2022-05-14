@@ -102,6 +102,7 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                               color: SECONDARY_COLOR,
                               fontSize: MARGIN_CARD_MEDIUM_2 + 1,
                             ),
+                            key: Key("sortBy"),
                           )
                         ],
                       ),
@@ -121,6 +122,7 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                   child: Icon(
                     changeToView,
                     color: SECONDARY_COLOR,
+                    key: Key("changeViews"),
                   ),
                 ),
               ),
@@ -213,11 +215,13 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                         ),
                       ),
                       leading: Radio<int>(
+                        key: Key("radioOne"),
                         value: 1,
                         groupValue: bloc.radioVal,
                         onChanged: (value) {
                           stateSetter(() {});
                           bloc.onTapBottomSheetRadioButton(value);
+                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -233,11 +237,13 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                         ),
                       ),
                       leading: Radio<int>(
+                        key: Key("radioTwo"),
                         value: 2,
                         groupValue: bloc.radioVal,
                         onChanged: (value) {
                           stateSetter(() {});
                           bloc.onTapBottomSheetRadioButton(value);
+                          Navigator.pop(context);
                         },
                         activeColor: Colors.blue,
                       ),
@@ -254,11 +260,13 @@ class _YourBookListSectionViewState extends State<YourBookListSectionView> {
                         ),
                       ),
                       leading: Radio<int>(
+                        key: Key("radioThree"),
                         value: 3,
                         groupValue: bloc.radioVal,
                         onChanged: (value) {
                           stateSetter(() {});
                           bloc.onTapBottomSheetRadioButton(value);
+                          Navigator.pop(context);
                         },
                         activeColor: Colors.blue,
                       ),
@@ -283,6 +291,7 @@ class ShowInVerticalListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      key: Key("verticalListView"),
       padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
       itemCount: books.length,
       shrinkWrap: true,

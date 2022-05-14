@@ -47,6 +47,7 @@ class SearchBooksResultPage extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_back,
                 color: SEARCH_BOOK_PAGE_APP_BAR_ICON_COLOR,
+                key: Key("searchedResultPageBack"),
               ),
             ),
           ),

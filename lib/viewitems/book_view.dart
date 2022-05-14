@@ -13,9 +13,12 @@ class BookView extends StatelessWidget {
 
   final BookVO? book;
 
+  final String keyName;
+
   BookView({
     this.isHomePage = true,
     this.is3xGrid = false,
+    this.keyName = "",
     required this.onTap,
     required this.book,
   });
@@ -25,6 +28,7 @@ class BookView extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(book?.title ?? ""),
       child: Container(
+        key: Key(keyName),
         margin: EdgeInsets.only(
             right: (!is3xGrid) ? MARGIN_MEDIUM_3 : MARGIN_CARD_MEDIUM_2 - 2),
         width: (!is3xGrid) ? 160 : 120,

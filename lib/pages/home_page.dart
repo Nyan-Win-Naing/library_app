@@ -193,6 +193,7 @@ class BooksByCategoryView extends StatelessWidget {
                       onTap: (title) {
                         _navigateToBookDetailPage(context, title, hBookLists?[index].books ?? []);
                       },
+                      keyName: "hList${index}",
                     ),
                     const SizedBox(height: MARGIN_MEDIUM),
                   ],
@@ -240,6 +241,7 @@ class HomeCarouselSectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int i = 0;
     return Container(
       // color: Colors.blue,
       height: screenHeight * 1.1 / 3,
@@ -254,6 +256,7 @@ class HomeCarouselSectionView extends StatelessWidget {
           return Builder(
             builder: (BuildContext context) {
               return Container(
+                key: Key("carouselItem${i++}"),
                 width: HOME_PAGE_CAROUSEL_ITEM_WIDTH,
                 child: Stack(
                   children: [

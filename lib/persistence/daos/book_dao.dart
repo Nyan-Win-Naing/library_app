@@ -26,7 +26,6 @@ class BookDao {
       key: (book) => book.title,
       value: (book) => book,
     );
-    print("saved");
     await getBookBox().putAll(bookMap);
   }
 
