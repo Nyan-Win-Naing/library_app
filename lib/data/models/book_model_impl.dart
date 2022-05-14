@@ -95,6 +95,11 @@ class BookModelImpl extends BookModel {
     print("Shelf is saved......");
   }
 
+  @override
+  void removeShelfFromShelfBox(String id) {
+    mShelfDao.removeShelfFromHive(id);
+  }
+
   /// Database
   @override
   Stream<BookVO?> getBookDetailFromDatabase(String title) {
@@ -151,5 +156,10 @@ class BookModelImpl extends BookModel {
         .getAllShelvesEventStream()
         .startWith(mShelfDao.getShelfByIdStream(id))
         .map((event) => mShelfDao.getShelfByIdForReactive(id));
+  }
+
+  @override
+  Future<ShelfVO?> getSingleShelfFromDatabaseNotReactive(String id) {
+    return Future.value(mShelfDao.getShelfById(id));
   }
 }

@@ -44,6 +44,7 @@ class AddToShelvesBloc extends ChangeNotifier {
 
   void onTapDone(BookVO? bookVo) {
     List<ShelfVO> selectedShelves = shelves?.where((shelf) => shelf.isSelected == true).toList() ?? [];
+    print("length is ${selectedShelves.length}..............");
     if(bookVo != null) {
       selectedShelves.forEach((shelf) {
         bookVo.timestamp = DateTime.now().millisecondsSinceEpoch;

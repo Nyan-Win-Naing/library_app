@@ -25,8 +25,8 @@ class EachShelfBloc extends ChangeNotifier {
 
   void onSubmit(String name, ShelfVO? shelf) {
     bookModel
-        .getSingleShelfFromDatabase(shelf?.shelfId ?? "")
-        .listen((shelfVo) {
+        .getSingleShelfFromDatabaseNotReactive(shelf?.shelfId ?? "")
+        .then((shelfVo) {
       if (shelfVo != null) {
         shelfVo.shelfName = name;
         bookModel.saveShelfToShelfBox(shelfVo);
@@ -40,9 +40,13 @@ class EachShelfBloc extends ChangeNotifier {
         );
         notifyListeners();
       }
-    }).onError((error) {
+    }).catchError((error) {
       debugPrint(error.toString());
     });
+  }
+
+  void onTapDelete(String id) {
+    bookModel.removeShelfFromShelfBox(id);
   }
 
   @override

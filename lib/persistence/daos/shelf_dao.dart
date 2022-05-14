@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:hive/hive.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
@@ -20,6 +22,11 @@ class ShelfDao {
 
   ShelfVO? getShelfById(String id) {
     return getShelfBox().get(id);
+  }
+
+  void removeShelfFromHive(String id) {
+    getShelfBox().delete(id);
+    print("Delete shelf successfully........");
   }
 
   List<ShelfVO> getAllShelves() {

@@ -8,6 +8,7 @@ abstract class BookModel {
   Future<List<BookVO>?> getMoreBookListByCategory(String listName, String offset);
   void getSearchedBookResults(String searchedWord);
   void saveShelfToShelfBox(ShelfVO shelf);
+  void removeShelfFromShelfBox(String id);
   // Future<List<BookVO>?> getMoreBooksTest(String listName, String offset);
 
   /// Database
@@ -17,4 +18,5 @@ abstract class BookModel {
   Stream<List<BookVO>?> getSearchedBookResultsFromDatabase(String searchWord);
   Stream<List<ShelfVO>> getShelvesFromDatabase();
   Stream<ShelfVO?> getSingleShelfFromDatabase(String id);
+  Future<ShelfVO?> getSingleShelfFromDatabaseNotReactive(String id);
 }
