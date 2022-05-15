@@ -39,6 +39,7 @@ class EachShelfPage extends StatelessWidget {
               },
               child: const Icon(
                 Icons.keyboard_arrow_left_sharp,
+                key: Key("eachShelfBack"),
                 color: SECONDARY_COLOR,
                 size: MARGIN_XXLARGE,
               ),
@@ -49,11 +50,15 @@ class EachShelfPage extends StatelessWidget {
                 child: PopupMenuButton(
                   icon: const Icon(
                     Icons.more_horiz,
+                    key: Key("shelfPopupMenu"),
                     color: SECONDARY_COLOR,
                   ),
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      child: Text(EACH_SHELF_PAGE_POP_UP_MENU_ITEM_1),
+                      child: Text(
+                        EACH_SHELF_PAGE_POP_UP_MENU_ITEM_1,
+                        key: Key("renameShelf"),
+                      ),
                       value: 1,
                       onTap: () {
                         EachShelfBloc bloc =
@@ -62,7 +67,10 @@ class EachShelfPage extends StatelessWidget {
                       },
                     ),
                     const PopupMenuItem(
-                      child: Text(EACH_SHELF_PAGE_POP_UP_MENU_ITEM_2),
+                      child: Text(
+                        EACH_SHELF_PAGE_POP_UP_MENU_ITEM_2,
+                        key: Key("deleteShelf"),
+                      ),
                       value: 2,
                     ),
                   ],
@@ -172,7 +180,7 @@ class EachShelfPage extends StatelessWidget {
       },
     ).then((exit) {
       print("Exit is $exit ..........");
-      if(exit) {
+      if (exit) {
         Navigator.pop(context);
       }
     });
@@ -204,6 +212,7 @@ class BookShelfNameAndDescriptionSectionView extends StatelessWidget {
                     style: TextStyle(
                       fontSize: MARGIN_LARGE,
                     ),
+                    key: Key("shelfRenameField"),
                     initialValue: shelf?.shelfName ?? "",
                     autofocus: true,
                     onFieldSubmitted: (value) {

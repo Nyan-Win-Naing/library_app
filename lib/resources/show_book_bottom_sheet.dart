@@ -84,6 +84,7 @@ void showBookBottomSheet(BuildContext context, BookVO? bookVo,
                     title: "Delete from library"),
                 GestureDetector(
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

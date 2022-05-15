@@ -63,6 +63,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                         ),
+                        key: Key("yourBooksTab"),
                       ),
                     ),
                     Tab(
@@ -71,6 +72,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                         ),
+                        key: Key("yourShelvesTab"),
                       ),
                     )
                   ],

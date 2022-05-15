@@ -12,6 +12,9 @@ const String CAROUSEL_ITEM_ONE_KEY = "carouselItem0";
 const String CAROUSEL_ITEM_TWO_KEY = "carouselItem1";
 const String CAROUSEL_ITEM_THREE_KEY = "carouselItem2";
 
+const String TEST_DATA_HOME_PAGE_BOOK_ONE_MORE_KEY_NAME = "hList0b0more";
+const String TEST_DATA_HOME_PAGE_BOOK_TWO_MORE_KEY_NAME = "hList1b0more";
+
 const String BOTTOM_NAV_ITEM_ONE = "btmNav1";
 const String BOTTOM_NAV_ITEM_TWO = "btmNav2";
 
@@ -48,3 +51,24 @@ const String SEARCHED_BOOKS_PAGE_BACK_KEY = "searchBookPageBack";
 /// Test Data for Search Result Page
 const String SEARCHED_RESULTS_CATEGORY_ONE = "Computers";
 const String SEARCHED_RESULTS_PAGE_BACK_KEY = "searchedResultPageBack";
+
+/// Test Data for Shelves From Library Page
+const String YOUR_BOOKS_TAB_FROM_LIBRARY_PAGE_KEY = "yourBooksTab";
+const String YOUR_SHELVES_TAB_FROM_LIBRARY_PAGE_KEY = "yourShelvesTab";
+const String CREAET_NEW_SHELF_BUTTON_KEY = "createNewShelf";
+const String ADD_SHELF_FIELD_KEY = "addShelfField";
+const String ADD_SHELF_DONE_BUTTON_KEY = "addShelfDone";
+const String SHELF_ONE = "Shelf One";
+const String SHELF_TWO = "Shelf Two";
+const String ADD_SHELF_TEXT = "Add to shelf";
+const String SHELF_ONE_CHECK_BOX = "shelf0";
+const String SHELF_TWO_CHECK_BOX = "shelf1";
+const String ADD_TO_SHELVES_DONE_BUTTON_KEY = "bookAddToShelfDone";
+const String SHELF_ONE_BOOKS_COUNT = "2 books";
+const String SHELF_TWO_BOOKS_COUNT = "1 books";
+const String SHELF_POP_UP_MENU_KEY = "shelfPopupMenu";
+const String SHELF_POP_UP_RENAME_KEY = "renameShelf";
+const String SHELF_POP_UP_DELETE_KEY = "deleteShelf";
+const String SHELF_RENAME_FIELD_KEY = "shelfRenameField";
+const String NEW_SHELF_NAME = "New Shelf";
+const String EACH_SHELF_BACK_ICON_KEY = "eachShelfBack";

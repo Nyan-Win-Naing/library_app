@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 class ShelfItem extends StatefulWidget {
   final ShelfVO? shelf;
   bool? isAddToShelvesPage;
+  final String keyName;
 
-  ShelfItem({required this.shelf, this.isAddToShelvesPage = false});
+  ShelfItem({required this.shelf, this.isAddToShelvesPage = false, this.keyName = ""});
 
   @override
   State<ShelfItem> createState() => _ShelfItemState();
@@ -106,6 +107,7 @@ class _ShelfItemState extends State<ShelfItem> {
                           checkColor: PRIMARY_COLOR,
                           value: widget.shelf?.isSelected ?? false,
                           materialTapTargetSize: MaterialTapTargetSize.padded,
+                          key: Key(widget.keyName),
                           onChanged: (value) {
                             AddToShelvesBloc bloc =
                                 Provider.of(context, listen: false);

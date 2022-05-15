@@ -72,6 +72,7 @@ class _AddToShelvesPageState extends State<AddToShelvesPage> {
                     child: const Icon(
                       Icons.check,
                       color: Colors.black54,
+                      key: Key("bookAddToShelfDone"),
                     ),
                   ),
                 ),
@@ -88,6 +89,7 @@ class _AddToShelvesPageState extends State<AddToShelvesPage> {
                   return ShelfItem(
                     shelf: shelves[index],
                     isAddToShelvesPage: true,
+                    keyName: "shelf$index",
                   );
                 },
               )

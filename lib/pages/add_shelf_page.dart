@@ -42,6 +42,7 @@ class _AddShelfPageState extends State<AddShelfPage> {
                     Icons.done,
                     color: ADD_SHELF_PAGE_BACK_ICON_COLOR,
                     size: MARGIN_XLARGE,
+                    key: Key("addShelfDone"),
                   ),
                 ),
               );
@@ -67,6 +68,7 @@ class _AddShelfPageState extends State<AddShelfPage> {
             builder: (context, validate, child) =>
                 TextField(
                   controller: addShelfFieldController,
+                  key: Key("addShelfField"),
                   style: const TextStyle(
                     fontSize: MARGIN_LARGE,
                   ),

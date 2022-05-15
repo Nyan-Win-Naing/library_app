@@ -86,6 +86,7 @@ class CreateShelfButtonSectionView extends StatelessWidget {
           );
         },
         child: Container(
+          key: Key("createNewShelf"),
           width: 130,
           height: 45,
           decoration: BoxDecoration(

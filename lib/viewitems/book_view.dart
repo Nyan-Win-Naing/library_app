@@ -73,6 +73,7 @@ class BookView extends StatelessWidget {
                           Icons.more_horiz_rounded,
                           color: PRIMARY_COLOR,
                           size: (!is3xGrid) ? MARGIN_LARGE : MARGIN_MEDIUM_2,
+                          key: Key("${keyName}more"),
                         ),
                       ),
                     ),
